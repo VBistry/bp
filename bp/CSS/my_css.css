@@ -1,0 +1,1235 @@
+/* =========================================
+Auth template CSS — pro přihlašovací a registrační formulář - doplnek
+   ========================================= */
+
+.form-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* =========================================
+   ZÁKLADNÍ STYLY PRO CELÝ PROJEKT
+   ========================================= */
+
+h1 {
+    font-size: 2rem;
+    padding: 0.1em;
+    border-bottom: 2px solid #959595;
+    text-align: center;
+    margin-left: -10em;
+    margin-right: -10em;
+}
+
+body {
+    overflow-x: clip; /* to same jako hidden, ale diky clip funguje position sticky */
+    padding-bottom: 1.5em;
+}
+
+html {
+    overflow-x: clip;/* to same jako hidden, ale diky clip funguje position sticky */
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Utility třídy */
+.text-weight--primary {
+    font-weight: bold;
+}
+
+.text-color--primary {
+    color: #555;
+}
+
+.text--muted {
+    color: #aaa;
+}
+
+.description-style {
+    color: #666;
+    font-style: italic;
+}
+
+.events-title {
+    font-size: 1.2rem;
+    padding: 0.3em;
+    color: #555;
+}
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+
+.navbar__brand {
+    background-color: #333;
+    width: 100%;
+    text-align: center;
+    padding: 0.5em;
+}
+
+.navbar__brand-text {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar__menu {
+    background-color: #ccc;
+    width: 100%;
+    padding: 0.5em;
+    position: sticky;
+    top: 0;
+    z-index: 9997;
+}
+
+.navbar__list {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: auto;
+    padding: 0;
+}
+
+.navbar__item--left {
+    display: flex;
+    position: absolute;
+    font-weight: bold;
+    left: 0.5rem;
+    gap: 0.5em;
+}
+
+.navbar__item--right {
+    position: absolute;
+    right: 0.5rem;
+}
+
+/* Navigační odkaz — BEM: block=navbar, element=link */
+.navbar__link {
+    font-weight: bold;
+    color: #555;
+    padding: 0.3em 1em;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.navbar__link:hover {
+    background-color: #bbb;
+    color: #333;
+}
+
+.navbar__link--active {
+    background-color: #999;
+    color: #000;
+}
+
+.navbar__link--danger {
+    color: #d9534f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar__link--danger:hover {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* =========================================
+   INFORMATION CARD & INFO LIST
+   ========================================= */
+
+/* Shared card style */
+.events-card,
+.events-table-wrapper,
+.profile-header-card,
+.section-card,
+.event-detail__header {
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.events-card {
+    padding: 1em;
+}
+
+.form-layout {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-layout__item {
+    display: flex;
+    align-items: center;
+    padding: 1.2em 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 0.5em;
+}
+
+.form-layout__item--description {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3em;
+}
+
+.form-layout__item:last-child {
+    border-bottom: none;
+}
+
+.form-layout__label {
+    width: 180px;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-layout__input {
+    flex-grow: 1;
+    max-width: 400px;
+    padding: 0.6em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-layout__input--description {
+    width: 100%;
+    max-width: none;
+}
+
+.form-layout__input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    outline: none;
+}
+
+/* Email badge */
+.email-badge {
+    font-size: 0.7rem;
+    padding: 0.5em;
+    border-radius: 4px;
+}
+
+.email-badge--verified {
+    color: white;
+    background: #198754;
+}
+
+.email-badge--unverified {
+    color: #000;
+    background: #ffc107;
+}
+
+/* =========================================
+   ROZVRŽENÍ STRÁNKY (LAYOUT)
+   ========================================= */
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.content--wide {
+    max-width: 1400px;
+    width: 100%;
+    padding: 0.5em;
+    margin: 0 auto;
+}
+
+/* =========================================
+   TLAČÍTKA
+   ========================================= */
+
+.btn-group {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.btn-group__item {
+    padding: 0.5em;
+    border: none;
+    border-radius: 4px;
+    background-color: #bbb;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.btn-group__item--small {
+    margin-top: 1.5em;
+
+}
+
+.btn-group__item--primary {
+    background-color: #198754;
+    color: white;
+}
+
+.btn-group__item--danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-group__item:hover {
+    background-color: #555;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-group__item--primary:hover {
+    background-color: #157347;
+}
+
+.btn-group__item--danger:hover {
+    background-color: #c9302c;
+}
+
+.btn-group__item:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================
+   PEVNÉ TLAČÍTKO (Create Event)
+   ========================================= */
+
+.fixed-btn {
+    position: fixed;
+    right: 30px;
+    z-index: 1000;
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fixed-btn--primary {
+    bottom: 30px;
+    background-color: #198754;
+    color: white;
+}
+
+.fixed-btn--primary:hover {
+    background-color: #157347;
+    color: white;
+}
+
+.fixed-btn--edit {
+    bottom: 30px;
+    background-color: #555;
+    color: white;
+}
+
+.fixed-btn--edit:hover {
+    background-color: #333;
+    color: white;
+}
+
+.fixed-btn--mobile-only {
+    display: none;
+}
+
+/* =========================================
+   IKONY
+   ========================================= */
+
+.nav-icon {
+    width: 26px;
+    height: 26px;
+    display: block;
+}
+
+.icon--primary {
+    width: 26px;
+    height: 26px;
+}
+
+.table-icon {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.table-icon:hover {
+    background-color: #e0e0e0;
+}
+
+/* =========================================
+   EVENTS TABLE
+   ========================================= */
+
+.events-table-wrapper {
+    overflow-x: auto;
+    margin-top: 1em;
+}
+
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.events-table thead tr {
+    border-bottom: 2px solid #eaeaea;
+}
+
+.events-table th {
+    padding: 0.5em;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+}
+
+.events-table__row {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.15s ease;
+}
+
+.events-table__row:last-child {
+    border-bottom: none;
+}
+
+.events-table__row:hover {
+    background-color: #f9f9f9;
+}
+
+.events-table td {
+    padding: 0.5em;
+}
+
+.events-table__name {
+    font-weight: 600;
+    color: #222;
+}
+
+.events-table__tbd {
+    color: #bbb;
+    font-style: italic;
+}
+
+.events-table__empty {
+    text-align: center;
+    padding: 3em;
+    color: #aaa;
+    font-style: italic;
+}
+
+.table-striped a {
+    color: black;
+}
+
+/* Vyhledávání a search-bar-row */
+.events-search {
+    margin: 1em;
+    max-width: 350px;
+}
+
+.search-bar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    margin: 1em;
+}
+
+.search-bar-row .events-search {
+    max-width: none;
+    flex: 1;
+    margin: 0;
+}
+
+/* Akce v tabulce */
+.icons-events-show {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+}
+
+.icons-events-show--left {
+    justify-content: flex-start;
+}
+
+/* =========================================
+   EVENT BADGE
+   ========================================= */
+
+.event-badge {
+    padding: 0.5em;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.event-badge--upcoming {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.event-badge--running {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.event-badge--ended {
+    background-color: #e2e3e5;
+    color: #41464b;
+}
+
+.event-badge--planning {
+    background-color: #ffe5d0;
+    color: #fd7e14;
+}
+
+/* =========================================
+   FULLCALENDAR
+   ========================================= */
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number {
+    color: #555;
+    font-size: 1.6rem;
+    padding: 0.4em;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    margin-right: 2px;
+    cursor: pointer;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+    background-color: #ffc107;
+    color: #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 4px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================
+   PLANNING — ANKETA
+   ========================================= */
+
+.section-planning {
+    display: none;
+}
+
+.proposed-dates {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.proposed-dates__hint {
+    color: #777;
+    font-size: 0.88em;
+    margin-bottom: 0.8em;
+}
+
+/* BEM: block=poll-option, element=field */
+.poll-option {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
+.poll-option__field {
+    flex: 1;
+}
+
+.poll-option__field input {
+    width: 100%;
+}
+
+/* =========================================
+   NOTIFIKACE (TOAST)
+   ========================================= */
+
+.notification {
+    padding: 0.5em 2em;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 1;
+    animation: notif-fade-in 0.4s ease forwards;
+}
+
+@keyframes notif-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notification--hiding {
+    animation: notif-fade-out 0.8s ease forwards;
+}
+
+@keyframes notif-fade-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.notification__container {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    max-width: 90vw;
+}
+
+.notification--success {
+    background-color: #36924c;
+}
+
+.notification--error {
+    background-color: #dc3545;
+}
+
+.notification--warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+/* =========================================
+   PROFIL
+   ========================================= */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: auto;
+    padding: 0.5em;
+}
+
+
+.profile-header-card {
+    padding: 2em;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    position: relative;
+}
+
+.profile-header-card--secondary {
+    display: flex;
+    gap: 1em;
+    padding: 1em;
+    align-items: center;
+}
+
+.profile-header-card__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-header-card__avatar--img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-header-card__info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+.profile-header-card__name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #222;
+    margin: 0;
+}
+
+.profile-header-card__edit-btn {
+    position: absolute;
+    top: 1.5em;
+    right: 1.5em;
+    font-size: 0.85rem;
+    padding: 0.4em 0.9em;
+}
+
+.section-card {
+    padding: 1.5em;
+    margin: 0.5em 0;
+}
+
+.section-card__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Grid pro hodnoty — stejný pro profil i event detail */
+.grid--primary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1em 2em;
+    padding: 0;
+}
+
+.grid--primary__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.grid--primary__item--full {
+    grid-column: 1 / -1;
+}
+
+.grid--primary__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.grid--primary__value {
+    font-size: 0.95rem;
+    color: #222;
+    font-weight: 500;
+}
+
+.grid--primary__value:first-letter {
+    text-transform: uppercase;
+}
+
+.grid--primary__value--raw:first-letter {
+    text-transform: none;
+}
+
+
+.grid--primary__input {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
+/* Avatar edit hover */
+.avatar-edit-wrapper {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.avatar-edit-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border-radius: 50%;
+}
+
+.avatar-edit-wrapper:hover .avatar-edit-overlay {
+    display: flex;
+}
+
+/* File input */
+
+/* =========================================
+   EVENT DETAIL
+   ========================================= */
+
+.event-detail {
+    max-width: 800px;
+    margin: 2em auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.event-detail__header {
+    padding: 1.5em;
+    position: relative;
+}
+
+.event-detail__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.4em 0;
+    border-bottom: none;
+    text-align: left;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.event-detail__deadline {
+    font-size: 0.9rem;
+    color: #666;
+    margin: -0.5em 0 1.2em 0;
+}
+
+
+/* Poll option cards (voting) */
+.poll-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    margin-bottom: 1.2em;
+}
+
+.poll-option-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9em 1.2em;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background-color: #fafafa;
+}
+
+.poll-option-card:hover {
+    border-color: #333;
+    background-color: #f5f5f5;
+}
+
+.poll-option-card--selected {
+    border-color: #198754;
+    background-color: #f0faf5;
+}
+
+.poll-option-card__radio {
+    display: none;
+}
+
+.poll-option-card__dates {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.poll-option-card__arrow {
+    color: #aaa;
+}
+
+.poll-option-card__votes {
+    font-size: 0.82rem;
+    color: #888;
+    background-color: #e8e8e8;
+    padding: 0.2em 0.7em;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.poll-option-card--selected .poll-option-card__votes {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+/* =========================================
+   PŘÁTELÉ
+   ========================================= */
+
+.friend-request-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7em 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.friend-request-row:last-child {
+    border-bottom: none;
+}
+
+.friend-request-row__name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #222;
+}
+
+.friend-request-row__actions {
+    display: flex;
+    gap: 0.5em;
+}
+
+.friends-invite-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 0.5em 0 1em 0;
+}
+
+.friends-invite-list__item {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   Modalni okno pro potvrzení akce (např. smazání eventu)
+   ========================================= */
+
+.confirm-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-modal--visible {
+    display: flex;
+}
+
+.confirm-modal__box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2em;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.confirm-modal__message {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.5em;
+}
+
+/* =========================================
+   NAVBAR — RESPONZIVITA (HAMBURGER MENU)
+   ========================================= */
+
+.navbar__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.3em;
+}
+
+.navbar__hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar__hamburger--open .navbar__hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.navbar__hamburger--open .navbar__hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar__hamburger--open .navbar__hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.navbar__dropdown {
+    display: none;
+    flex-direction: column;
+    background-color: #ccc;
+    border-top: 1px solid #bbb;
+}
+
+.navbar__dropdown--open {
+    display: flex;
+}
+
+.navbar__dropdown-item {
+    padding: 0.8em 1.5em;
+    font-weight: bold;
+    color: #555;
+    border-bottom: 1px solid #bbb;
+    transition: background-color 0.2s ease;
+}
+
+.navbar__dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.navbar__dropdown-item:hover {
+    background-color: #bbb;
+    color: #333;
+}
+
+.navbar__dropdown-item--active {
+    background-color: #999;
+    color: #000;
+}
+
+.navbar__dropdown-item--danger {
+    color: #d9534f;
+}
+
+.navbar__dropdown-item--danger:hover {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* Mobilní lišta — skrytá na desktopu */
+.navbar__mobile-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    font-weight: bold;
+}
+
+
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* RESPONSIVE PROFILES / EDIT FORMS */
+
+    .profile-header-card,
+    .profile-header-card--secondary {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .profile-header-card__name {
+        margin: auto;
+    }
+
+    .profile-header-card__avatar,
+    .profile-header-card__avatar--img {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto;
+    }
+
+    .profile-header-card__info {
+        width: 100%;
+    }
+
+    .profile-header-card__edit-btn {
+        position: static;
+        align-self: flex-end;
+        margin-top: 0.5rem;
+        display: none;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-group__item {
+        width: 100%;
+    }
+
+
+    .navbar__menu {
+        padding: 0;
+    }
+
+    .navbar__brand-text {
+        font-size: 1rem;
+    }
+
+    .btn--desktop-only {
+        display: none;
+    }
+
+    .navbar__list {
+        display: none;
+    }
+
+    .navbar__mobile-bar {
+        display: flex;
+    }
+
+    .navbar__hamburger {
+        display: flex;
+    }
+
+    .fixed-btn--mobile-only {
+        display: flex;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.2rem;
+        margin: 0 0.5em;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .section-card {
+        padding: 1em;
+    }
+
+    .search-bar-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* form-layout — events edit */
+    .form-layout__item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3em;
+    }
+
+    .form-layout__label {
+        width: 100%;
+    }
+
+    .form-layout__input {
+        width: 100%;
+        max-width: none;
+    }
+
+    .events-card {
+        padding: 0.5em;
+    }
+
+    .profile-header-card--secondary .grid--primary__item {
+        text-align: center;
+    }
+
+    .profile-header-card--secondary .grid--primary__label {
+        display: block;
+        margin-bottom: 0.4em;
+    }
+
+    .poll-option {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .poll-option__field {
+        width: 100%;
+    }
+
+    .poll-option__field input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 425px) {
+    .fc .fc-button {
+        padding: 0.3em;
+        font-size: 0.9rem;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1rem;
+        margin: 0 0.3em;
+    }
+}
