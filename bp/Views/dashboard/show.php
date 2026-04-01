@@ -1,8 +1,3 @@
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-<!-- linkovani FullCalendar knihovny -->
-<script>
-    const apiEventsUrl = "<?php echo $domena; ?>/api/events";
-</script>
 
 <main class="content--wide">
     <h1>Your Planner Dashboard</h1>

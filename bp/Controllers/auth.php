@@ -8,7 +8,7 @@ include 'Models/auth.php';
 if ($router['method'] == 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email  = trim($_POST['email'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         $passwd = $_POST['passwd'] ?? '';
 
         // Validace
@@ -34,12 +34,13 @@ if ($router['method'] == 'login') {
 
         if ($user && password_verify($passwd, $user['passwd'])) {
 
-            $_SESSION['autorized']  = true;
-            $_SESSION['user_id']    = $user['id'];
+            $_SESSION['autorized'] = true;
+            $_SESSION['user_id'] = $user['id'];
             $_SESSION['first_name'] = $user['first_name'];
-            $_SESSION['surname']    = $user['surname'];
-            $_SESSION['role']       = $user['role'];
-            $_SESSION['email']      = $user['email'];
+            $_SESSION['surname'] = $user['surname'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['verified_email'] = $user['verified_email'];
 
             session_regenerate_id(true);
 
@@ -57,23 +58,23 @@ if ($router['method'] == 'login') {
     include 'Views/auth/login.php';
 
 
-/* ------------------------------------------------------------------
-   2. LOGIKA PRO REGISTRACI (REGISTER)
-   ------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------
+       2. LOGIKA PRO REGISTRACI (REGISTER)
+       ------------------------------------------------------------------ */
 } elseif ($router['method'] == 'register') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $firstName        = trim($_POST['first_name'] ?? '');
-        $surname          = trim($_POST['surname'] ?? '');
-        $email            = trim($_POST['email'] ?? '');
-        $passwd           = $_POST['passwd'] ?? '';
-        $repeatPasswd     = $_POST['repeatpasswd'] ?? '';
-        $birth_year       = (int) ($_POST['birth_year'] ?? 0);
-        $tel              = trim($_POST['tel'] ?? '');
+        $firstName = trim($_POST['first_name'] ?? '');
+        $surname = trim($_POST['surname'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $passwd = $_POST['passwd'] ?? '';
+        $repeatPasswd = $_POST['repeatpasswd'] ?? '';
+        $birth_year = (int) ($_POST['birth_year'] ?? 0);
+        $tel = trim($_POST['tel'] ?? '');
         $description_user = trim($_POST['description_user'] ?? '');
-        $gender           = $_POST['gender'] ?? 'other';
-        $role             = 'user';
+        $gender = $_POST['gender'] ?? 'other';
+        $role = 'user';
 
         $allowed_genders = ['male', 'female', 'other'];
         if (!in_array($gender, $allowed_genders)) {
@@ -149,17 +150,22 @@ if ($router['method'] == 'login') {
             if ($success) {
                 $newUserId = $pdo->lastInsertId();
 
-                $_SESSION['autorized']  = true;
-                $_SESSION['user_id']    = $newUserId;
+                $_SESSION['autorized'] = true;
+                $_SESSION['user_id'] = $newUserId;
                 $_SESSION['first_name'] = $firstName;
-                $_SESSION['surname']    = $surname;
-                $_SESSION['role']       = $role;
-                $_SESSION['email']      = $email;
+                $_SESSION['surname'] = $surname;
+                $_SESSION['role'] = $role;
+                $_SESSION['email'] = $email;
+                $_SESSION['verified_email'] = false;
 
                 session_regenerate_id(true);
 
+                // vygeneruj verification URL a pošli email
+                $verificationUrl = $domena . '/' . generateVerificationUrl($newUserId, $email);
+                sendVerificationEmail($email, $firstName, $verificationUrl);
+
                 setFlash('success', 'Account was created successfully. Welcome, ' . htmlspecialchars($firstName) . '!');
-                header("Location: " . $domena . "/dashboard");
+                header("Location: " . $domena . "/auth/verify-email");
                 exit;
 
             } else {
@@ -179,13 +185,56 @@ if ($router['method'] == 'login') {
     include 'Views/auth/register.php';
 
 
-/* ------------------------------------------------------------------
-   3. ODHLÁŠENÍ
-   ------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------
+    3. ODHLÁŠENÍ
+       ------------------------------------------------------------------ */
 } elseif ($router['method'] == 'logout') {
     session_destroy();
     $pdo = null;
     header("Location: " . $domena . "/auth/login");
+    exit;
+
+    /* ------------------------------------------------------------------
+       4. ZOBRAZENÍ STRÁNKY "ZKONTROLUJ EMAIL"
+       ------------------------------------------------------------------ */
+} elseif ($router['method'] == 'verify-email') {
+    include 'Views/auth/verify-email.php';
+
+    /* ------------------------------------------------------------------
+       5. OVĚŘENÍ EMAILU (kliknutí na odkaz)
+       ------------------------------------------------------------------ */
+} elseif ($router['method'] == 'verify') {
+
+    $userId = $router['params'][0] ?? null;
+    $hash = $router['params'][1] ?? null;
+    $expires = $_GET['expires'] ?? null;
+    $signature = $_GET['signature'] ?? null;
+
+    if (!$userId || !$hash || !$expires || !$signature) {
+        setFlash('error', 'Invalid verification link.');
+        header("Location: " . $domena . "/auth/verify-email");
+        exit;
+    }
+
+    if (!verifySignedUrl((int) $userId, $hash, (int) $expires, $signature)) {
+        setFlash('error', 'Verification link is invalid or has expired.');
+        header("Location: " . $domena . "/auth/verify-email");
+        exit;
+    }
+
+    // ověření OK — nastavit v DB
+    $user = getUserById($pdo, (int) $userId);
+    if (!$user || sha1($user['email']) !== $hash) {
+        setFlash('error', 'Invalid verification link.');
+        header("Location: " . $domena . "/auth/verify-email");
+        exit;
+    }
+
+    verifyUserEmail($pdo, (int) $userId);  // funkce do Models/auth.php
+    $_SESSION['verified_email'] = true;
+
+    setFlash('success', 'Email verified successfully!');
+    header("Location: " . $domena . "/dashboard");
     exit;
 }
 ?>

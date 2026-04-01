@@ -41,4 +41,15 @@ function registerUser(
     ]);
 }
 
+function verifyUserEmail(PDO $pdo, int $userId): bool
+{
+    $stmt = $pdo->prepare("
+        UPDATE users 
+        SET verified_email = true, 
+            email_verified_at = NOW() 
+        WHERE id = ?
+    ");
+    return $stmt->execute([$userId]);
+}
+
 ?>

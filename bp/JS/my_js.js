@@ -436,7 +436,7 @@ if (calendarEl) {
      */
     const statusSelect     = document.getElementById("status");
     const sectionConfirmed = document.getElementById("section-confirmed");
-    const sectionPlanning  = document.getElementById("section-planning");   
+    const sectionPlanning  = document.getElementById("section-planning");
 
     if (statusSelect && sectionConfirmed && sectionPlanning) {
         function toggleStatusSections() {

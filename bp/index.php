@@ -22,10 +22,21 @@ zeptap se na odevzdavani BP
 
 */
 
+$domena = "http://localhost/bp/bp";
+
+define('APP_SECRET_KEY', trim(parse_ini_file(__DIR__ . '/.env')['APP_SECRET_KEY']));
+define('MAIL_HOST', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_HOST']));
+define('MAIL_PORT', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_PORT']));
+define('MAIL_USERNAME', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_USERNAME']));
+define('MAIL_PASSWORD', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_PASSWORD']));
+define('MAIL_FROM', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_FROM']));
+define('MAIL_FROM_NAME', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_FROM_NAME']));
+// tady je mozna DIR navic - dala by se pouzit domena?
+
 session_start();
 include 'Models/connect_db.php';
 include 'helpers.php';
-$domena = "http://localhost/bp/bp";
+
 
 // Ověření, zda je uživatel přihlášen
 $autorized = $_SESSION['autorized'] ?? null;
@@ -33,9 +44,9 @@ $autorized = $_SESSION['autorized'] ?? null;
 // Zpracování URL
 function process_URL()
 {
-    $URL        = explode('/', $_GET['pozadavek'] ?? '');
+    $URL = explode('/', $_GET['pozadavek'] ?? '');
     $controller = $URL[0] ?? null;
-    $method     = $URL[1] ?? null;
+    $method = $URL[1] ?? null;
     $num_of_params = count($URL);
 
     $params = [];
@@ -52,8 +63,16 @@ if (!$autorized && $router['controller'] !== 'auth') {
     $router = ['controller' => 'auth', 'method' => 'login', 'params' => null];
 }
 
+if ($autorized && !$_SESSION['verified_email'] && $router['controller'] !== 'auth') {
+    $router = ['controller' => 'auth', 'method' => 'verify-email', 'params' => null];
+}
+
+if ($autorized && $_SESSION['verified_email'] && $router['controller'] === 'auth' && $router['method'] !== 'logout') {
+    $router = ['controller' => 'dashboard', 'method' => 'show', 'params' => null];
+}
+
 // Whitelist povolených controllerů - ochrana před Path Traversal útokem
-$allowed_controllers = ['api','auth', 'dashboard', 'events', 'profile', 'friends'];
+$allowed_controllers = ['api', 'auth', 'dashboard', 'events', 'profile', 'friends'];
 
 if ($router['controller']) {
 

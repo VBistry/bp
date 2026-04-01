@@ -10,6 +10,10 @@
         </div>
     </div>
 </div>
+<script>
+    const apiEventsUrl = "<?php echo $domena; ?>/api/events";
+</script>
+<script src="js/fullcalendar.js"></script>
 <script src="js/my_js.js"></script>
 </body>
 
