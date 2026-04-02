@@ -37,15 +37,13 @@
 
     <!-- MOBIL: lišta s datem + hamburger -->
     <div class="navbar__mobile-bar">
-        <div style="display:flex; align-items:center; gap:0.5em; font-weight:bold;">
+        <div class="navbar__mobile-bar--left">
             <img class="nav-icon" src="images/today-icon1.png" alt="Today">
             <span><?php echo date('d.m.Y'); ?></span>
         </div>
 
         <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle menu">
-            <span class="navbar__hamburger-line"></span>
-            <span class="navbar__hamburger-line"></span>
-            <span class="navbar__hamburger-line"></span>
+            <img class="nav-icon" src="images/menu-icon.png" alt="Dropdown menu">
         </button>
     </div>
 

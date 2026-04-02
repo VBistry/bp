@@ -12,12 +12,15 @@
                     <span class="avatar-edit-overlay">✎</span>
                 </a>
             <?php else: ?>
-                <div class="profile-header-card__avatar">
-                    <?php
-                    $initials = strtoupper(substr($user_data['first_name'], 0, 1) . substr($user_data['surname'], 0, 1));
-                    echo htmlspecialchars($initials);
-                    ?>
-                </div>
+                <a href="profile/edit" class="avatar-edit-wrapper">
+                    <div class="profile-header-card__avatar">
+                        <?php
+                        $initials = strtoupper(substr($user_data['first_name'], 0, 1) . substr($user_data['surname'], 0, 1));
+                        echo htmlspecialchars($initials);
+                        ?>
+                    </div>
+                    <span class="avatar-edit-overlay">✎</span>
+                </a>
             <?php endif; ?>
             <div class="profile-header-card__info">
                 <h2 class="profile-header-card__name">

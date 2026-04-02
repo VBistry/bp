@@ -6,31 +6,26 @@ git add .
 git commit -m "message"
 git push -u origin main --force
 
-verifikace emailu
-pridat forget password
 obrazky - prava
 pridat znovunacteni vice nez 100 eventu nebudu zobrazovat(to same kamaradi)
-nefunnguje vkladani obrazku na macu
 
 https://www.flaticon.com/search?word=edit&color=color - iconky
-bootstrap frontend framework - https://uicookies.com/bootstrap-login-form/
-
-super, tedka tedy jdu na to overovani emailu, jak jsme se o tom bavili uz drive. Chci to tedy udelat, jak to dela laravel, pomoz mi to udelat, pouzivej kod a styl(system), kterym to dela laravel.
-
-zeptat se na to, jestli pri testovani bude internet: kvuli fullcalendaru
-zeptap se na odevzdavani BP
+bootstrap frontend framework - https://adminlte.io/blog/bootstrap-login-forms/
+https://colorlib.com/etc/regform/colorlib-regform-7/index.html
 
 */
 
-$domena = "http://localhost/bp/bp";
+$domena = "http://" . $_SERVER['HTTP_HOST'] . "/bp/bp";
 
-define('APP_SECRET_KEY', trim(parse_ini_file(__DIR__ . '/.env')['APP_SECRET_KEY']));
-define('MAIL_HOST', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_HOST']));
-define('MAIL_PORT', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_PORT']));
-define('MAIL_USERNAME', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_USERNAME']));
-define('MAIL_PASSWORD', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_PASSWORD']));
-define('MAIL_FROM', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_FROM']));
-define('MAIL_FROM_NAME', trim(parse_ini_file(__DIR__ . '/.env')['MAIL_FROM_NAME']));
+$_env = parse_ini_file(__DIR__ . '/.env');
+define('APP_SECRET_KEY', $_env['APP_SECRET_KEY']);
+define('MAIL_HOST',      $_env['MAIL_HOST']);
+define('MAIL_PORT',      $_env['MAIL_PORT']);
+define('MAIL_USERNAME',  $_env['MAIL_USERNAME']);
+define('MAIL_PASSWORD',  $_env['MAIL_PASSWORD']);
+define('MAIL_FROM',      $_env['MAIL_FROM']);
+define('MAIL_FROM_NAME', $_env['MAIL_FROM_NAME']);
+unset($_env);
 // tady je mozna DIR navic - dala by se pouzit domena?
 
 session_start();

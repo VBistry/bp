@@ -18,6 +18,7 @@
                     <div class="signin-image">
                         <figure><img src="<?php echo $domena; ?>/frameworks/auth-template/images/signin-image.jpg" alt="sign in image"></figure>
                         <a href="register" class="signup-image-link">Create an account</a>
+                        <a href="<?php echo $domena; ?>/auth/forgot-password" class="signup-image-link">Forget password</a>
                     </div>
 
                     <div class="signin-form">

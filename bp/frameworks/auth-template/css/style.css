@@ -288,6 +288,11 @@ figure {
   -ms-border-radius: 5px;
   margin-top: 25px;
   cursor: pointer; }
+
+  .form-submit--full {
+    width: 100%;
+}
+
   .form-submit:hover {
     background: #4292dc; }
 
@@ -298,7 +303,8 @@ figure {
   font-size: 14px;
   color: #222;
   display: block;
-  text-align: center; }
+  text-align: center;
+  margin-top: 15px; }
 
 .term-service {
   font-size: 13px;
@@ -454,7 +460,9 @@ label.valid {
 
 .signin-content {
   padding-top: 50px;
-  padding-bottom: 50px; }
+  padding-bottom: 50px;
+  justify-content: center;
+}
 
 .social-login {
   align-items: center;

@@ -108,6 +108,12 @@ if (isset($_POST['submit_update_profile'])) {
         exit;
     }
 
+    if (empty($tel) || !preg_match('/^\+?[0-9\s\-()]{9,}$/', $tel)) {
+        setFlash('error', 'Please enter a valid phone number.');
+        header("Location: " . $domena . "/profile/edit");
+        exit;
+    }
+
     // Heslo je nepovinné - mění se jen pokud ho uživatel vyplnil
     $passwordHash = null;
     if (!empty($passwd)) {

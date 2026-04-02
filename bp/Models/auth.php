@@ -52,4 +52,43 @@ function verifyUserEmail(PDO $pdo, int $userId): bool
     return $stmt->execute([$userId]);
 }
 
+// Uloží reset token do DB
+function savePasswordResetToken(PDO $pdo, int $userId, string $token, string $expires): bool
+{
+    $stmt = $pdo->prepare("
+        UPDATE users 
+        SET password_reset_token = ?,
+            password_reset_expires_at = ?
+        WHERE id = ?
+    ");
+    return $stmt->execute([$token, $expires, $userId]);
+}
+
+// Najde uživatele podle reset tokenu
+function getUserByResetToken(PDO $pdo, string $token)
+{
+    $stmt = $pdo->prepare("
+        SELECT * FROM users 
+        WHERE password_reset_token = ? 
+        AND password_reset_expires_at > NOW()
+        AND deleted_at IS NULL
+    ");
+    $stmt->execute([$token]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Aktualizuje heslo a smaže token
+function updateUserPassword(PDO $pdo, int $userId, string $hashedPassword): bool
+{
+    $stmt = $pdo->prepare("
+        UPDATE users 
+        SET passwd = ?,
+            password_reset_token = NULL,
+            password_reset_expires_at = NULL,
+            updated_at = NOW()
+        WHERE id = ?
+    ");
+    return $stmt->execute([$hashedPassword, $userId]);
+}
+
 ?>

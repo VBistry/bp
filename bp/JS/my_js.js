@@ -278,6 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const birthYear = parseInt(document.getElementById('birth_year').value);
             const gender    = document.getElementById('gender').value;
             const currentYear = new Date().getFullYear();
+            const tel       = document.getElementById('tel').value.trim();
 
             if (!firstName || !surname) {
                 e.preventDefault();
@@ -318,6 +319,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 showNotification('Please select a gender.', 'error');
                 return;
             }
+
+            if (!tel || !/^\+?[0-9\s\-()]{9,}$/.test(tel)) {
+                e.preventDefault();
+                showNotification('Please enter a valid phone number. For example: +420 123 456 789 or 123 456 789 or 123456789', 'error');
+                return;
+            }
+
+
         });
     }
 
@@ -339,6 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const passwd    = document.getElementById('passwd').value;
             const birthYear = parseInt(document.getElementById('birth_year').value);
             const currentYear = new Date().getFullYear();
+            const tel       = document.getElementById('tel').value.trim();
 
             if (!firstName || !surname) {
                 e.preventDefault();
@@ -366,13 +376,70 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('birth_year').focus();
                 return;
             }
+
+            if (!tel || !/^\+?[0-9\s\-()]{9,}$/.test(tel)) {
+                e.preventDefault();
+                showNotification('Please enter a valid phone number. For example: +420 123 456 789 or 123456789', 'error');
+                document.getElementById('tel').focus();
+                return;
+            }
+        });
+    }
+
+
+    /*
+     * -----------------------------------------
+     * ČÁST 7: VALIDACE — FORGOT PASSWORD
+     * -----------------------------------------
+     */
+    const forgotPasswordForm = document.querySelector('form[action*="forgot-password"]');
+
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', function (e) {
+            const email = document.getElementById('email').value.trim();
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                e.preventDefault();
+                showNotification('Please enter a valid email address.', 'error');
+                document.getElementById('email').focus();
+                return;
+            }
+        });
+    }
+
+
+    /*
+     * -----------------------------------------
+     * ČÁST 8: VALIDACE — RESET PASSWORD
+     * -----------------------------------------
+     */
+    const resetPasswordForm = document.querySelector('form[action*="reset-password"]');
+
+    if (resetPasswordForm) {
+        resetPasswordForm.addEventListener('submit', function (e) {
+            const passwd = document.getElementById('passwd').value;
+            const repeat = document.getElementById('repeatpasswd').value;
+
+            if (passwd.length < 8 || passwd.length > 72) {
+                e.preventDefault();
+                showNotification('Password must be between 8 and 72 characters.', 'error');
+                document.getElementById('passwd').focus();
+                return;
+            }
+
+            if (passwd !== repeat) {
+                e.preventDefault();
+                showNotification('Passwords do not match.', 'error');
+                document.getElementById('repeatpasswd').focus();
+                return;
+            }
         });
     }
 
 
  /*
  * -----------------------------------------
- * ČÁST 7: KALENDÁŘ (FULLCALENDAR)
+ * ČÁST 9: KALENDÁŘ (FULLCALENDAR)
  * -----------------------------------------
  */
 
@@ -574,13 +641,11 @@ if (calendarEl) {
 
     if (hamburgerBtn && navDropdown) {
         hamburgerBtn.addEventListener('click', function () {
-            this.classList.toggle('navbar__hamburger--open');
             navDropdown.classList.toggle('navbar__dropdown--open');
         });
 
         navDropdown.querySelectorAll('.navbar__dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
-                hamburgerBtn.classList.remove('navbar__hamburger--open');
                 navDropdown.classList.remove('navbar__dropdown--open');
             });
         });

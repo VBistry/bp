@@ -1,6 +1,7 @@
 <?php
 
 include 'Models/auth.php';
+include 'Models/user.php';
 
 /* ------------------------------------------------------------------
    1. LOGIKA PRO PŘIHLÁŠENÍ (LOGIN)
@@ -124,6 +125,12 @@ if ($router['method'] == 'login') {
             exit;
         }
 
+        if (empty($tel) || !preg_match('/^\+?[0-9\s\-()]{9,}$/', $tel)) {
+            setFlash('error', 'Please enter a valid phone number.');
+            header("Location: " . $domena . "/auth/register");
+            exit;
+        }
+
         if (findUserByEmail($pdo, $email)) {
             setFlash('error', 'This email is already registered.');
             header("Location: " . $domena . "/auth/register");
@@ -230,11 +237,99 @@ if ($router['method'] == 'login') {
         exit;
     }
 
-    verifyUserEmail($pdo, (int) $userId);  // funkce do Models/auth.php
+    verifyUserEmail($pdo, (int) $userId);
     $_SESSION['verified_email'] = true;
 
     setFlash('success', 'Email verified successfully!');
     header("Location: " . $domena . "/dashboard");
     exit;
+    
+} elseif ($router['method'] == 'resend-verification') {
+    $userId = $_SESSION['user_id'];
+    $email  = $_SESSION['email'];
+    $firstName = $_SESSION['first_name'];
+
+    $verificationUrl = $domena . '/' . generateVerificationUrl($userId, $email);
+    sendVerificationEmail($email, $firstName, $verificationUrl);
+
+    setFlash('success', 'Verification email has been resent. Please check your inbox.');
+    header("Location: " . $domena . "/auth/verify-email");
+    exit;
+}
+
+/* ------------------------------------------------------------------
+   6. FORGOT PASSWORD — zobrazení formuláře + odeslání emailu
+   ------------------------------------------------------------------ */
+elseif ($router['method'] == 'forgot-password') {
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = trim($_POST['email'] ?? '');
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            setFlash('error', 'Please enter a valid email address.');
+            header("Location: " . $domena . "/auth/forgot-password");
+            exit;
+        }
+
+        $user = findUserByEmail($pdo, $email);
+
+        // záměrně stejná zpráva i když uživatel neexistuje — bezpečnost
+        if ($user) {
+            $resetUrl = $domena . '/' . generatePasswordResetUrl($pdo, (int) $user['id'], $email);
+            sendPasswordResetEmail($email, $user['first_name'], $resetUrl);
+        }
+
+        setFlash('success', 'If this email is registered, you will receive a reset link shortly.');
+        header("Location: " . $domena . "/auth/forgot-password");
+        exit;
+    }
+
+    include 'Views/auth/forgot-password.php';
+
+/* ------------------------------------------------------------------
+   7. RESET PASSWORD — zobrazení formuláře + uložení nového hesla
+   ------------------------------------------------------------------ */
+} elseif ($router['method'] == 'reset-password') {
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $token        = $_POST['token'] ?? '';
+        $passwd       = $_POST['passwd'] ?? '';
+        $repeatPasswd = $_POST['repeatpasswd'] ?? '';
+
+        if (empty($token) || empty($passwd) || empty($repeatPasswd)) {
+            setFlash('error', 'Please fill in all fields.');
+            header("Location: " . $domena . "/auth/reset-password?token=" . urlencode($token));
+            exit;
+        }
+
+        if (strlen($passwd) < 8 || strlen($passwd) > 72) {
+            setFlash('error', 'Password must be between 8 and 72 characters.');
+            header("Location: " . $domena . "/auth/reset-password?token=" . urlencode($token));
+            exit;
+        }
+
+        if ($passwd !== $repeatPasswd) {
+            setFlash('error', 'Passwords do not match.');
+            header("Location: " . $domena . "/auth/reset-password?token=" . urlencode($token));
+            exit;
+        }
+
+        $user = getUserByResetToken($pdo, $token);
+
+        if (!$user) {
+            setFlash('error', 'Reset link is invalid or has expired.');
+            header("Location: " . $domena . "/auth/forgot-password");
+            exit;
+        }
+
+        $hashedPassword = password_hash($passwd, PASSWORD_DEFAULT);
+        updateUserPassword($pdo, (int) $user['id'], $hashedPassword);
+
+        setFlash('success', 'Password has been reset successfully. Please log in.');
+        header("Location: " . $domena . "/auth/login");
+        exit;
+    }
+
+    include 'Views/auth/reset-password.php';
 }
 ?>
