@@ -1,30 +1,23 @@
 <?php
-
-// 1. KONTROLA PŘIHLÁŠENÍ
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . $domena . "/auth/login");
     exit;
 }
-
-// 2. NAČTENÍ MODELŮ A DAT
 include 'Models/user.php';
 include 'Models/events.php';
 include 'Models/friends.php';
-$user_data = getUserById($pdo, $_SESSION['user_id']);
 
-// =========================================================================
-// ZPRACOVÁNÍ FORMULÁŘŮ
-// =========================================================================
+$user_data = getUserById($pdo, $_SESSION['user_id']);
 
 // --- CREATE ---
 if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_create_event'])) {
 
-    $event_name      = trim($_POST['event_name'] ?? '');
-    $location        = !empty($_POST['location']) ? trim($_POST['location']) : null;
-    $start_at        = !empty($_POST['start_at']) ? $_POST['start_at'] : null;
-    $end_at          = !empty($_POST['end_at']) ? $_POST['end_at'] : null;
-    $status          = $_POST['status'] ?? 'planning';
-    $description     = !empty($_POST['description_event']) ? trim($_POST['description_event']) : null;
+    $event_name = trim($_POST['event_name'] ?? '');
+    $location = !empty($_POST['location']) ? trim($_POST['location']) : null;
+    $start_at = !empty($_POST['start_at']) ? $_POST['start_at'] : null;
+    $end_at = !empty($_POST['end_at']) ? $_POST['end_at'] : null;
+    $status = $_POST['status'] ?? 'planning';
+    $description = !empty($_POST['description_event']) ? trim($_POST['description_event']) : null;
     $voting_deadline = !empty($_POST['voting_deadline']) ? $_POST['voting_deadline'] : null;
 
     $allowed_statuses = ['confirmed', 'planning'];
@@ -54,7 +47,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 
     if ($start_at && $end_at) {
         $start = new DateTime($start_at);
-        $end   = new DateTime($end_at);
+        $end = new DateTime($end_at);
         if ($end <= $start) {
             setFlash('error', 'End time must be after start time.');
             header("Location: " . $domena . "/events/create");
@@ -62,7 +55,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
         }
     }
 
-    // Validace pozvaných — musí být přátelé
+    // Validace pozvaných - proti fake POST requestum
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
         $friends = getAllUserFriends($pdo, $_SESSION['user_id']);
@@ -78,20 +71,22 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 
     $isSaved = createEvent($pdo, $_SESSION['user_id'], $event_name, $location, $start_at, $end_at, $status, $description, $voting_deadline);
 
+    // po supesnem vytvoreni evnetu
     if ($isSaved) {
         $new_event_id = $pdo->lastInsertId();
 
+        // Přidání pozvánek pro všechny vybrané uživatele
         foreach ($invited_ids as $inv_id) {
             addEventRegistration($pdo, $new_event_id, $inv_id, 'pending');
         }
 
         if ($status === 'planning' && isset($_POST['poll_starts']) && isset($_POST['poll_ends'])) {
             $starts = $_POST['poll_starts'];
-            $ends   = $_POST['poll_ends'];
+            $ends = $_POST['poll_ends'];
 
             for ($i = 0; $i < count($starts); $i++) {
                 $poll_start = trim($starts[$i]);
-                $poll_end   = trim($ends[$i]);
+                $poll_end = trim($ends[$i]);
                 if (!empty($poll_start) && !empty($poll_end)) {
                     $ps = new DateTime($poll_start);
                     $pe = new DateTime($poll_end);
@@ -115,7 +110,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 // --- UPDATE ---
 if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_update_event'])) {
 
-    $event_id = (int) ($router['params'][0] ?? 0);
+    $event_id = ($router['params'][0] ?? 0);
 
     if (!$event_id) {
         setFlash('error', 'Invalid event ID.');
@@ -135,12 +130,12 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
         exit;
     }
 
-    $event_name      = trim($_POST['event_name'] ?? '');
-    $location        = !empty($_POST['location']) ? trim($_POST['location']) : null;
-    $start_at        = !empty($_POST['start_at']) ? $_POST['start_at'] : null;
-    $end_at          = !empty($_POST['end_at']) ? $_POST['end_at'] : null;
-    $status          = $_POST['status'] ?? 'planning';
-    $description     = !empty($_POST['description_event']) ? trim($_POST['description_event']) : null;
+    $event_name = trim($_POST['event_name'] ?? '');
+    $location = !empty($_POST['location']) ? trim($_POST['location']) : null;
+    $start_at = !empty($_POST['start_at']) ? $_POST['start_at'] : null;
+    $end_at = !empty($_POST['end_at']) ? $_POST['end_at'] : null;
+    $status = $_POST['status'] ?? 'planning';
+    $description = !empty($_POST['description_event']) ? trim($_POST['description_event']) : null;
     $voting_deadline = !empty($_POST['voting_deadline']) ? $_POST['voting_deadline'] : null;
 
     $allowed_statuses = ['confirmed', 'planning', 'cancelled'];
@@ -170,7 +165,7 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
 
     if ($start_at && $end_at) {
         $start = new DateTime($start_at);
-        $end   = new DateTime($end_at);
+        $end = new DateTime($end_at);
         if ($end <= $start) {
             setFlash('error', 'End time must be after start time.');
             header("Location: " . $domena . "/events/edit/" . $event_id);
@@ -181,7 +176,7 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
     // Validace pozvaných — musí být přátelé
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
-        $friends    = getAllUserFriends($pdo, $_SESSION['user_id']);
+        $friends = getAllUserFriends($pdo, $_SESSION['user_id']);
         $friend_ids = array_column($friends, 'id');
         foreach ($invited_ids as $inv_id) {
             if (!in_array($inv_id, $friend_ids)) {
@@ -202,10 +197,10 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
         if ($status === 'planning' && isset($_POST['poll_starts']) && isset($_POST['poll_ends'])) {
             deletePollOptionsByEventId($pdo, $event_id);
             $starts = $_POST['poll_starts'];
-            $ends   = $_POST['poll_ends'];
+            $ends = $_POST['poll_ends'];
             for ($i = 0; $i < count($starts); $i++) {
                 $poll_start = trim($starts[$i]);
-                $poll_end   = trim($ends[$i] ?? '');
+                $poll_end = trim($ends[$i] ?? '');
                 if (!empty($poll_start) && !empty($poll_end)) {
                     $ps = new DateTime($poll_start);
                     $pe = new DateTime($poll_end);
@@ -292,8 +287,8 @@ if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
 if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_participation'])) {
 
     $participation_status = $_POST['submit_participation'];
-    $target_event_id      = (int) ($_POST['event_id'] ?? 0);
-    $current_user_id      = $_SESSION['user_id'];
+    $target_event_id = (int) ($_POST['event_id'] ?? 0);
+    $current_user_id = $_SESSION['user_id'];
 
     $allowed_statuses = ['attending', 'maybe', 'declined'];
 
@@ -344,7 +339,7 @@ if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 // --- HLASOVÁNÍ V ANKETĚ ---
 if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_vote'])) {
 
-    $option_id       = (int) ($_POST['poll_option'] ?? 0);
+    $option_id = (int) ($_POST['poll_option'] ?? 0);
     $target_event_id = (int) ($_POST['event_id'] ?? 0);
     $current_user_id = $_SESSION['user_id'];
 
@@ -422,38 +417,38 @@ if ($router['method'] === 'create') {
     }
 
     if ($event_data['status'] === 'planning') {
-        $poll_options      = getPollOptionsByEventId($pdo, $event_id);
-        $vote_counts       = getPollVoteCounts($pdo, $event_id);
+        $poll_options = getPollOptionsByEventId($pdo, $event_id);
+        $vote_counts = getPollVoteCounts($pdo, $event_id);
         $user_current_vote = getUserVote($pdo, $event_id, $_SESSION['user_id']);
     }
 
-    $now      = time();
+    $now = time();
     $start_ts = !empty($event_data['start_at']) ? strtotime($event_data['start_at']) : null;
-    $end_ts   = !empty($event_data['end_at'])   ? strtotime($event_data['end_at'])   : $start_ts;
+    $end_ts = !empty($event_data['end_at']) ? strtotime($event_data['end_at']) : $start_ts;
 
     if ($event_data['status'] === 'cancelled') {
-        $display_status = ['label' => 'Cancelled',   'badge' => 'ended'];
+        $display_status = ['label' => 'Cancelled', 'badge' => 'ended'];
     } elseif ($event_data['status'] === 'planning') {
-        $display_status = ['label' => 'Planning',    'badge' => 'planning'];
+        $display_status = ['label' => 'Planning', 'badge' => 'planning'];
     } elseif ($start_ts && $end_ts && $start_ts <= $now && $end_ts >= $now) {
         $display_status = ['label' => 'Running now', 'badge' => 'running'];
     } elseif ($end_ts && $end_ts < $now) {
-        $display_status = ['label' => 'Ended',       'badge' => 'ended'];
+        $display_status = ['label' => 'Ended', 'badge' => 'ended'];
     } else {
-        $display_status = ['label' => 'Upcoming',    'badge' => 'upcoming'];
+        $display_status = ['label' => 'Upcoming', 'badge' => 'upcoming'];
     }
 
     include 'Views/events/details.php';
 
 } elseif ($router['method'] === null || $router['method'] === 'show') {
 
-    $all_events    = getAllEventsForUser($pdo, $_SESSION['user_id']);
+    $all_events = getAllEventsForUser($pdo, $_SESSION['user_id']);
     $pending_invitations = getPendingEventInvitations($pdo, $_SESSION['user_id']);
-    $voting_events  = [];
+    $voting_events = [];
     $running_events = [];
     $upcoming_events = [];
-    $past_events    = [];
-    $current_time   = time();
+    $past_events = [];
+    $current_time = time();
 
     foreach ($all_events as $event) {
         if ($event['status'] === 'planning' || empty($event['start_at'])) {
@@ -462,7 +457,7 @@ if ($router['method'] === 'create') {
         }
 
         $start_time = strtotime($event['start_at']);
-        $end_time   = !empty($event['end_at']) ? strtotime($event['end_at']) : $start_time;
+        $end_time = !empty($event['end_at']) ? strtotime($event['end_at']) : $start_time;
 
         if ($start_time <= $current_time && $end_time >= $current_time) {
             $running_events[] = $event;

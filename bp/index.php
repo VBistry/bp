@@ -6,7 +6,6 @@ git add .
 git commit -m "message"
 git push -u origin main --force
 
-obrazky - prava
 pridat znovunacteni vice nez 100 eventu nebudu zobrazovat(to same kamaradi)
 
 https://www.flaticon.com/search?word=edit&color=color - iconky
@@ -15,18 +14,16 @@ https://colorlib.com/etc/regform/colorlib-regform-7/index.html
 
 */
 
+// $domena = "http://localhost/bp/bp";
 $domena = "http://" . $_SERVER['HTTP_HOST'] . "/bp/bp";
 
-$_env = parse_ini_file(__DIR__ . '/.env');
-define('APP_SECRET_KEY', $_env['APP_SECRET_KEY']);
-define('MAIL_HOST',      $_env['MAIL_HOST']);
-define('MAIL_PORT',      $_env['MAIL_PORT']);
-define('MAIL_USERNAME',  $_env['MAIL_USERNAME']);
-define('MAIL_PASSWORD',  $_env['MAIL_PASSWORD']);
-define('MAIL_FROM',      $_env['MAIL_FROM']);
-define('MAIL_FROM_NAME', $_env['MAIL_FROM_NAME']);
-unset($_env);
-// tady je mozna DIR navic - dala by se pouzit domena?
+define('APP_SECRET_KEY', parse_ini_file(__DIR__ . '/.env')['APP_SECRET_KEY']);
+define('MAIL_HOST', parse_ini_file(__DIR__ . '/.env')['MAIL_HOST']);
+define('MAIL_PORT', parse_ini_file(__DIR__ . '/.env')['MAIL_PORT']);
+define('MAIL_USERNAME', parse_ini_file(__DIR__ . '/.env')['MAIL_USERNAME']);
+define('MAIL_PASSWORD', parse_ini_file(__DIR__ . '/.env')['MAIL_PASSWORD']);
+define('MAIL_FROM', parse_ini_file(__DIR__ . '/.env')['MAIL_FROM']);
+define('MAIL_FROM_NAME', parse_ini_file(__DIR__ . '/.env')['MAIL_FROM_NAME']);
 
 session_start();
 include 'Models/connect_db.php';

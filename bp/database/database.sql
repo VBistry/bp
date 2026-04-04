@@ -19,7 +19,7 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     tel VARCHAR(20) NOT NULL,
     gender ENUM('male', 'female', 'other') NOT NULL,
-    role ENUM('admin', 'user') DEFAULT 'user', -- role zmenit na admin, user
+    role ENUM('admin', 'user') DEFAULT 'user',
     description_user VARCHAR(1000) DEFAULT NULL,
     avatar_url VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

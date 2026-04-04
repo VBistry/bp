@@ -9,8 +9,18 @@ Auth template CSS — pro přihlašovací a registrační formulář - doplnek
     min-height: 80vh;
 }
 
+.auth-select {
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 6px 30px;
+    font-family: Poppins;
+    box-sizing: border-box;
+}
+
 /* =========================================
-   ZÁKLADNÍ STYLY PRO CELÝ PROJEKT
+    ZÁKLADNÍ STYLY
    ========================================= */
 
 h1 {
@@ -35,7 +45,6 @@ a {
     text-decoration: none;
 }
 
-/* Utility třídy */
 .text-weight--primary {
     font-weight: bold;
 }
@@ -108,7 +117,6 @@ a {
     right: 0.5rem;
 }
 
-/* Navigační odkaz — BEM: block=navbar, element=link */
 .navbar__link {
     font-weight: bold;
     color: #555;
@@ -171,7 +179,7 @@ a {
 .form-layout__item {
     display: flex;
     align-items: center;
-    padding: 1.2em 0;
+    padding: 1em 0;
     border-bottom: 1px solid #f0f0f0;
     gap: 0.5em;
 }
@@ -187,7 +195,7 @@ a {
 }
 
 .form-layout__label {
-    width: 180px;
+    width: 12em;
     flex-shrink: 0;
     font-weight: 600;
     color: #555;
@@ -736,6 +744,11 @@ main {
     margin: 0.5em 0;
 }
 
+.section-card--wide {
+    max-width: 1100px;
+    margin: 1.5em auto 0 auto;
+}
+
 .section-card__title {
     font-size: 1rem;
     font-weight: 700;
@@ -947,6 +960,15 @@ main {
 .friend-request-row__actions {
     display: flex;
     gap: 0.5em;
+}
+
+.friend-request-row__form {
+    display: inline;
+}
+
+.friend-request-row__date {
+    color: #aaa;
+    font-size: 0.85rem;
 }
 
 .friends-invite-list {

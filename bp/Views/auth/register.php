@@ -74,8 +74,7 @@
                             
                             <div class="form-group">
                                 <label for="gender"><i class="zmdi zmdi-male-female"></i></label>
-                                <select name="gender" id="gender"
-                                    style="display: block; width: 100%; border: none; border-bottom: 1px solid #999; padding: 6px 30px; font-family: Poppins; box-sizing: border-box;">
+                                <select name="gender" id="gender" class="auth-select">
                                     <option value="" disabled <?php echo empty($_POST['gender']) ? 'selected' : ''; ?>>
                                         Select Gender</option>
                                     <option value="male" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'male') ? 'selected' : ''; ?>>Male</option>

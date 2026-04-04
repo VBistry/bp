@@ -2,10 +2,6 @@
 
 include 'Models/user.php';
 
-// =========================================================================
-// ZPRACOVÁNÍ POST POŽADAVKŮ
-// =========================================================================
-
 // --- SMAZÁNÍ ÚČTU ---
 if (isset($_POST['submit_delete_profile'])) {
     deleteUserById($pdo, $_SESSION['user_id']);
@@ -21,7 +17,7 @@ if (isset($_POST['submit_update_profile'])) {
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime  = finfo_file($finfo, $_FILES['avatar']['tmp_name']);
+        $mime = finfo_file($finfo, $_FILES['avatar']['tmp_name']);
 
         $allowed_mimes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!in_array($mime, $allowed_mimes)) {
@@ -36,13 +32,13 @@ if (isset($_POST['submit_update_profile'])) {
             exit;
         }
 
-        $ext = match($mime) {
+        $ext = match ($mime) {
             'image/jpeg' => 'jpg',
-            'image/png'  => 'png',
+            'image/png' => 'png',
             'image/webp' => 'webp',
         };
 
-        $filename   = $_SESSION['user_id'] . '.' . $ext;
+        $filename = $_SESSION['user_id'] . '.' . $ext;
         $uploadPath = 'uploads/avatars/' . $filename;
 
         foreach (['jpg', 'png', 'webp'] as $oldExt) {
@@ -114,7 +110,7 @@ if (isset($_POST['submit_update_profile'])) {
         exit;
     }
 
-    // Heslo je nepovinné - mění se jen pokud ho uživatel vyplnil
+    // Heslo se mění jen pokud ho uživatel vyplnil
     $passwordHash = null;
     if (!empty($passwd)) {
         if (strlen($passwd) < 8 || strlen($passwd) > 72) {

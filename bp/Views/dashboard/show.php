@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             <a href="events/detail/<?php echo $event['id']; ?>">
-                                                <img class="nav-icon table-icon" src="images/view-icon2.png" title="View event"></a>
+                                                <img class="nav-icon table-icon" src="images/view-icon.png" title="View event"></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

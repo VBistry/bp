@@ -15,40 +15,34 @@ function setFlash(string $type, string $message): void
 function generateVerificationUrl(int $userId, string $email): string
 {
     $expires = time() + (60 * 60); // 1 hodina
-    $hash = sha1($email);             // hash emailu zabrání, aby jeden odkaz fungoval pro více uživatelů
+    $hash = sha1($email);  // zabrání, aby jeden odkaz fungoval pro více uživatelů
 
     $url = "auth/verify/{$userId}/{$hash}?expires={$expires}";
 
-    // HMAC podpis — zabrání úpravě jakéhokoliv parametru v URL
+    // zabrání úpravě jakéhokoliv parametru v URL
     $signature = hash_hmac('sha256', $url, APP_SECRET_KEY);
 
-    // vysledan URL pro jednoho uzivatele 
+    // vysledan URL pro jednoho uzivatele
     return $url . "&signature={$signature}";
 }
 
 function verifySignedUrl(int $userId, string $hash, int $expires, string $signature): bool
 {
-    // 1. zkontroluj expiraci
+    // expirace
     if (time() > $expires) {
         return false;
     }
 
-    // 2. znovu sestav URL bez signature
+    // znovu sestavevni URL
     $url = "auth/verify/{$userId}/{$hash}?expires={$expires}";
 
-    // 3. vypočítej očekávaný podpis
     $expectedSignature = hash_hmac('sha256', $url, APP_SECRET_KEY);
 
-    // 4. porovnej pomocí hash_equals (bezpečné porovnání)
-    return hash_equals($expectedSignature, $signature);
+    return $expectedSignature === $signature;
 }
 
 function sendVerificationEmail(string $toEmail, string $toName, string $verificationUrl): void
 {
-    // načtení PHPMailer tříd
-    //equire_once __DIR__ . '/frameworks/PHPMailer/src/PHPMailer.php';
-    //require_once __DIR__ . '/frameworks/PHPMailer/src/SMTP.php';
-    //require_once __DIR__ . '/frameworks/PHPMailer/src/Exception.php';
 
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
@@ -79,8 +73,6 @@ function sendVerificationEmail(string $toEmail, string $toName, string $verifica
             <p>This link will expire in <strong>1 hour</strong>.</p>
             <p>If you did not create an account, ignore this email.</p>
         ";
-        $mail->AltBody = "Hello {$toName},\n\nVerify your email: {$verificationUrl}\n\nExpires in 1 hour.";
-
         $mail->send();
 
     } catch (Exception $e) {
@@ -100,12 +92,6 @@ function generatePasswordResetUrl(PDO $pdo, int $userId, string $email): string
 }
 
 function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUrl): void{
-
-    // načtení PHPMailer tříd
-    //equire_once __DIR__ . '/frameworks/PHPMailer/src/PHPMailer.php';
-    //require_once __DIR__ . '/frameworks/PHPMailer/src/SMTP.php';
-    //require_once __DIR__ . '/frameworks/PHPMailer/src/Exception.php';
-
 
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
@@ -136,8 +122,6 @@ function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUr
             <p>This link will expire in <strong>1 hour</strong>.</p>
             <p>If you did not create an account, ignore this email.</p>
         ";
-        $mail->AltBody = "Hello {$toName},\n\nReset your password: {$resetUrl}\n\nExpires in 1 hour.";
-
         $mail->send();
 
     } catch (Exception $e) {

@@ -14,12 +14,12 @@
                         <?php echo htmlspecialchars($request['first_name'] . ' ' . $request['surname'] . ' (' . $request['email'] . ')'); ?>
                     </span>
                     <div class="friend-request-row__actions">
-                        <form action="<?php echo $domena; ?>/friends" method="POST" style="display:inline;">
+                        <form action="<?php echo $domena; ?>/friends" method="POST" class="friend-request-row__form">
                             <input type="hidden" name="friendship_id" value="<?php echo $request['friendship_id']; ?>">
                             <button type="submit" name="submit_accept_request"
                                 class="btn-group__item btn-group__item--primary btn-group__item--small">Accept</button>
                         </form>
-                        <form action="<?php echo $domena; ?>/friends" method="POST" style="display:inline;">
+                        <form action="<?php echo $domena; ?>/friends" method="POST" class="friend-request-row__form">
                             <input type="hidden" name="friendship_id" value="<?php echo $request['friendship_id']; ?>">
                             <button type="submit" name="submit_decline_request"
                                 class="btn-group__item btn-group__item--small"
@@ -74,7 +74,7 @@
                             <td>
                                 <div class="icons-events-show icons-events-show--left">
                                     <a href="friends/profile/<?php echo $friend['id']; ?>">
-                                        <img class="nav-icon table-icon" src="images/view-icon2.png" alt="View profile">
+                                        <img class="nav-icon table-icon" src="images/view-icon.png" alt="View profile">
                                     </a>
                                     <form action="<?php echo $domena; ?>/friends" method="POST">
                                         <input type="hidden" name="friend_id" value="<?php echo $friend['id']; ?>">

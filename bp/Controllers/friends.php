@@ -10,13 +10,9 @@ include 'Models/user.php';
 
 $current_user_id = $_SESSION['user_id'];
 
-// =========================================================================
-// ZPRACOVÁNÍ POST POŽADAVKŮ
-// =========================================================================
-
 // --- ODESLÁNÍ ŽÁDOSTI O PŘÁTELSTVÍ ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_send_request'])) {
-    $receiver_id = (int) ($_POST['receiver_id'] ?? 0);
+    $receiver_id = ($_POST['receiver_id'] ?? 0);
 
     if (!$receiver_id) {
         setFlash('error', 'Invalid user.');
@@ -38,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_send_request']
 
 // --- PŘIJETÍ ŽÁDOSTI ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_accept_request'])) {
-    $friendship_id = (int) ($_POST['friendship_id'] ?? 0);
+    $friendship_id = ($_POST['friendship_id'] ?? 0);
 
     if (acceptFriendRequest($pdo, $friendship_id, $current_user_id)) {
         setFlash('success', 'Friend request accepted!');
@@ -52,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_accept_request
 
 // --- ODMÍTNUTÍ ŽÁDOSTI ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_decline_request'])) {
-    $friendship_id = (int) ($_POST['friendship_id'] ?? 0);
+    $friendship_id = ($_POST['friendship_id'] ?? 0);
 
     if (declineFriendRequest($pdo, $friendship_id, $current_user_id)) {
         setFlash('success', 'Friend request declined.');
@@ -66,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_decline_reques
 
 // --- ODEBRÁNÍ PŘÍTELE ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_remove_friend'])) {
-    $friend_id = (int) ($_POST['friend_id'] ?? 0);
+    $friend_id = ($_POST['friend_id'] ?? 0);
 
     if (removeFriend($pdo, $current_user_id, $friend_id)) {
         setFlash('success', 'Friend removed.');
@@ -105,10 +101,10 @@ if ($router['method'] === 'profile') {
 
     include 'Views/friends/profile.php';
 
-// --- VYHLEDÁVÁNÍ ---
+    // --- VYHLEDÁVÁNÍ ---
 } elseif ($router['method'] === 'search') {
     $search_result = null;
-    $search_email  = trim($_GET['email'] ?? '');
+    $search_email = trim($_GET['email'] ?? '');
 
     if (!empty($search_email)) {
         if (!filter_var($search_email, FILTER_VALIDATE_EMAIL)) {
@@ -123,9 +119,9 @@ if ($router['method'] === 'profile') {
 
     include 'Views/friends/search.php';
 
-// --- SEZNAM PŘÁTEL (výchozí) ---
+    // --- SEZNAM PŘÁTEL (výchozí) ---
 } else {
-    $friends          = getAllUserFriends($pdo, $current_user_id);
+    $friends = getAllUserFriends($pdo, $current_user_id);
     $pending_requests = getPendingRequests($pdo, $current_user_id);
     $sent_requests = getSentRequests($pdo, $current_user_id);
 

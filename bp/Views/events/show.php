@@ -17,7 +17,7 @@
 
         <!-- SEKCE: Čekající pozvánky -->
         <?php if (!empty($pending_invitations)): ?>
-            <div class="section-card" style="max-width: 1100px; margin: 1.5em auto 0 auto;">
+            <div class="section-card section-card--wide">
                 <h3 class="section-card__title">Pending Invitations (<?php echo count($pending_invitations); ?>)
                 </h3>
                 <?php foreach ($pending_invitations as $inv): ?>
@@ -26,17 +26,16 @@
                             <strong><?php echo htmlspecialchars($inv['event_name']); ?></strong>
                             &mdash; invited by <?php echo htmlspecialchars($inv['first_name'] . ' ' . $inv['surname']); ?>
                             <?php if (!empty($inv['start_at'])): ?>
-                                <span
-                                    style="color:#aaa; font-size:0.85rem;">(<?php echo date('d.m.Y H:i', strtotime($inv['start_at'])); ?>)</span>
+                                <span class="friend-request-row__date">(<?php echo date('d.m.Y H:i', strtotime($inv['start_at'])); ?>)</span>
                             <?php endif; ?>
                         </span>
                         <div class="friend-request-row__actions">
-                            <form action="<?php echo $domena; ?>/events/show" method="POST" style="display:inline;">
+                            <form action="<?php echo $domena; ?>/events/show" method="POST" class="friend-request-row__form">
                                 <input type="hidden" name="registration_id" value="<?php echo $inv['registration_id']; ?>">
                                 <button type="submit" name="submit_accept_invitation"
                                     class="btn-group__item btn-group__item--primary btn-group__item--small">Accept</button>
                             </form>
-                            <form action="<?php echo $domena; ?>/events/show" method="POST" style="display:inline;">
+                            <form action="<?php echo $domena; ?>/events/show" method="POST" class="friend-request-row__form">
                                 <input type="hidden" name="registration_id" value="<?php echo $inv['registration_id']; ?>">
                                 <button type="submit" name="submit_decline_invitation"
                                     class="btn-group__item btn-group__item--small"
@@ -104,7 +103,7 @@
                                                 </a>
                                             <?php else: ?>
                                                 <a href="events/detail/<?php echo $event['id']; ?>">
-                                                    <img class="nav-icon table-icon" src="images/view-icon2.png" title="View event"></a>
+                                                    <img class="nav-icon table-icon" src="images/view-icon.png" title="View event"></a>
                                             <?php endif; ?>
 
                                             <a href="events/edit/<?php echo $event['id']; ?>">

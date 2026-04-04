@@ -7,7 +7,7 @@
     <!-- DESKTOP: původní lišta -->
     <ul class="navbar__list">
         <li class="navbar__item--left">
-            <img class="nav-icon" src="images/today-icon1.png" alt="Today">
+            <img class="nav-icon" src="images/today-icon.png" alt="Today">
             <span><?php echo date('d.m.Y'); ?></span>
         </li>
 
@@ -30,7 +30,7 @@
 
         <li class="navbar__item--right">
             <a href="auth/logout" class="navbar__link navbar__link--danger">
-                <img class="nav-icon" src="images/logout-icon1.png" alt="Logout">
+                <img class="nav-icon" src="images/logout-icon.png" alt="Logout">
             </a>
         </li>
     </ul>
@@ -38,7 +38,7 @@
     <!-- MOBIL: lišta s datem + hamburger -->
     <div class="navbar__mobile-bar">
         <div class="navbar__mobile-bar--left">
-            <img class="nav-icon" src="images/today-icon1.png" alt="Today">
+            <img class="nav-icon" src="images/today-icon.png" alt="Today">
             <span><?php echo date('d.m.Y'); ?></span>
         </div>
 
