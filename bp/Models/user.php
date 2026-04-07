@@ -3,7 +3,11 @@
 function getUserById(PDO $pdo, int $user_id)
 {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ? AND deleted_at IS NULL");
+        $stmt = $pdo->prepare("
+        SELECT *
+        FROM users
+        WHERE id = ?
+        AND deleted_at IS NULL");
         $stmt->execute([$user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -13,8 +17,12 @@ function getUserById(PDO $pdo, int $user_id)
 
 function updateUser(PDO $pdo, int $user_id, array $data)
 {
-    // Kontrola, zda email už nepoužívá někdo jiný (aktivní uživatel)
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND id != ? AND deleted_at IS NULL");
+    // Check if email is already used by another active user
+    $stmt = $pdo->prepare("
+    SELECT id
+    FROM users
+    WHERE email = ?
+    AND id != ? AND deleted_at IS NULL");
     $stmt->execute([$data['email'], $user_id]);
 
     if ($stmt->fetch()) {
@@ -23,8 +31,9 @@ function updateUser(PDO $pdo, int $user_id, array $data)
 
     try {
         if (!empty($data['passwd'])) {
-            // Uživatel mění i heslo
-            $sql = "UPDATE users SET 
+            // User is also changing password
+            $sql = "
+            UPDATE users SET 
                         first_name = ?, 
                         surname = ?, 
                         email = ?, 
@@ -34,7 +43,8 @@ function updateUser(PDO $pdo, int $user_id, array $data)
                         passwd = ?, 
                         description_user = ?,
                         updated_at = NOW() 
-                    WHERE id = ? AND deleted_at IS NULL";
+                    WHERE id = ?
+                    AND deleted_at IS NULL";
 
             $params = [
                 $data['first_name'],
@@ -48,8 +58,9 @@ function updateUser(PDO $pdo, int $user_id, array $data)
                 $user_id
             ];
         } else {
-            // Uživatel nemění heslo
-            $sql = "UPDATE users SET 
+            // User is not changing password
+            $sql = "
+            UPDATE users SET 
                         first_name = ?, 
                         surname = ?, 
                         email = ?, 
@@ -81,48 +92,29 @@ function updateUser(PDO $pdo, int $user_id, array $data)
     }
 }
 
-// SOFT DELETE — nastaví deleted_at místo skutečného smazání
+// Soft delete — sets deleted_at instead of actually deleting
 function deleteUserById(PDO $pdo, int $user_id)
 {
     try {
-        $stmt = $pdo->prepare("UPDATE users SET deleted_at = NOW() WHERE id = ?");
+        $stmt = $pdo->prepare("
+        UPDATE users
+        SET deleted_at = NOW()
+        WHERE id = ?");
         return $stmt->execute([$user_id]);
     } catch (PDOException $e) {
         return false;
     }
 }
 
-function createUser(PDO $pdo, array $data)
-{
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND deleted_at IS NULL");
-    $stmt->execute([$data['email']]);
-    if ($stmt->fetch()) {
-        return "A user with this email already exists.";
-    }
-
-    try {
-        $hash_hesla = password_hash($data['heslo'], PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (first_name, surname, email, passwd, tel, role)
-                VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            $data['first_name'],
-            $data['surname'],
-            $data['email'],
-            $hash_hesla,
-            $data['tel'],
-            $data['role'] ?? 'user'
-        ]);
-        return true;
-    } catch (PDOException $e) {
-        return "Database error: " . $e->getMessage();
-    }
-}
 
 function updateUserAvatar(PDO $pdo, int $user_id, string $avatar_url)
 {
     try {
-        $stmt = $pdo->prepare("UPDATE users SET avatar_url = ?, updated_at = NOW() WHERE id = ? AND deleted_at IS NULL");
+        $stmt = $pdo->prepare("
+        UPDATE users
+        SET avatar_url = ?, updated_at = NOW()
+        WHERE id = ?
+        AND deleted_at IS NULL");
         return $stmt->execute([$avatar_url, $user_id]);
     } catch (PDOException $e) {
         return false;

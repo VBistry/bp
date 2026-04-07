@@ -1,14 +1,14 @@
 <?php
 
-// Najde uživatele podle emailu - používá se při přihlášení a kontrole duplicit
+// Find user by email - used for login and duplicate check
 function findUserByEmail(PDO $pdo, string $email)
 {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND deleted_at IS NULL");
     $stmt->execute([trim($email)]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Zaregistruje nového uživatele
+// Register a new user
 function registerUser(
     PDO $pdo,
     string $firstName,
@@ -52,7 +52,7 @@ function verifyUserEmail(PDO $pdo, int $userId): bool
     return $stmt->execute([$userId]);
 }
 
-// Uloží reset token do DB
+// Save password reset token to DB
 function savePasswordResetToken(PDO $pdo, int $userId, string $token, string $expires): bool
 {
     $stmt = $pdo->prepare("
@@ -64,7 +64,7 @@ function savePasswordResetToken(PDO $pdo, int $userId, string $token, string $ex
     return $stmt->execute([$token, $expires, $userId]);
 }
 
-// Najde uživatele podle reset tokenu
+// Find user by reset token
 function getUserByResetToken(PDO $pdo, string $token)
 {
     $stmt = $pdo->prepare("
@@ -77,7 +77,7 @@ function getUserByResetToken(PDO $pdo, string $token)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Aktualizuje heslo a smaže token
+// Update password and clear reset token
 function updateUserPassword(PDO $pdo, int $userId, string $hashedPassword): bool
 {
     $stmt = $pdo->prepare("

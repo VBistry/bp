@@ -4,6 +4,7 @@ include 'frameworks/PHPMailer/src/PHPMailer.php';
 include 'frameworks/PHPMailer/src/SMTP.php';
 include 'frameworks/PHPMailer/src/Exception.php';
 
+// Set a flash message(to Session) to be displayed on the next page load
 function setFlash(string $type, string $message): void
 {
     if (!isset($_SESSION['flash'])) {
@@ -14,26 +15,25 @@ function setFlash(string $type, string $message): void
 
 function generateVerificationUrl(int $userId, string $email): string
 {
-    $expires = time() + (60 * 60); // 1 hodina
-    $hash = sha1($email);  // zabrání, aby jeden odkaz fungoval pro více uživatelů
+    $expires = time() + (60 * 60); // 1 hour expiration
+    $hash = sha1($email);  // prevention against one link working for multiple users
 
     $url = "auth/verify/{$userId}/{$hash}?expires={$expires}";
 
-    // zabrání úpravě jakéhokoliv parametru v URL
+    // prevents modification of any parameter in the URL
     $signature = hash_hmac('sha256', $url, APP_SECRET_KEY);
 
-    // vysledan URL pro jednoho uzivatele
     return $url . "&signature={$signature}";
 }
 
 function verifySignedUrl(int $userId, string $hash, int $expires, string $signature): bool
 {
-    // expirace
+    // expiration check
     if (time() > $expires) {
         return false;
     }
 
-    // znovu sestavevni URL
+    // reconstruct URL
     $url = "auth/verify/{$userId}/{$hash}?expires={$expires}";
 
     $expectedSignature = hash_hmac('sha256', $url, APP_SECRET_KEY);
@@ -47,7 +47,7 @@ function sendVerificationEmail(string $toEmail, string $toName, string $verifica
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
     try {
-        // SMTP nastavení z konstant (.env)
+        // SMTP settings from constants (.env)
         $mail->isSMTP();
         $mail->Host = MAIL_HOST;
         $mail->SMTPAuth = true;
@@ -55,19 +55,19 @@ function sendVerificationEmail(string $toEmail, string $toName, string $verifica
         $mail->Password = MAIL_PASSWORD;
         $mail->Port = MAIL_PORT;
 
-        // odesílatel a příjemce
+        // sender and recipient
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
         $mail->addAddress($toEmail, $toName);
 
-        // obsah emailu
+        // email content
         $mail->isHTML(true);
         $mail->Subject = 'Please verify your email address';
         $mail->Body = "
-            <h2>Hello {$toName}!</h2>
+            <h1>Hello {$toName}!</h1>
             <p>Please click the button below to verify your email address:</p>
-            <a href='{$verificationUrl}' 
-               style='background:#198754; color:white; padding:12px 24px; 
-                      border-radius:4px; text-decoration:none; font-weight:bold;'>
+            <a href='{$verificationUrl}'
+            style='background:#198754; color:white; padding:12px 24px;
+                    border-radius:4px; text-decoration:none; font-weight:bold;'>
                 Verify Email
             </a>
             <p>This link will expire in <strong>1 hour</strong>.</p>
@@ -81,13 +81,12 @@ function sendVerificationEmail(string $toEmail, string $toName, string $verifica
 }
 function generatePasswordResetUrl(PDO $pdo, int $userId, string $email): string
 {
-    $token   = bin2hex(random_bytes(32)); // náhodný token
+    $token   = bin2hex(random_bytes(32)); // random token
     $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-    // uložíme token do DB
+    // save token to DB
     savePasswordResetToken($pdo, $userId, $token, $expires);
 
-    // sestavíme URL s tokenem
     return "auth/reset-password?token={$token}";
 }
 
@@ -96,7 +95,7 @@ function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUr
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
     try {
-        // SMTP nastavení z konstant (.env)
+        // SMTP settings from constants (.env)
         $mail->isSMTP();
         $mail->Host = MAIL_HOST;
         $mail->SMTPAuth = true;
@@ -104,23 +103,23 @@ function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUr
         $mail->Password = MAIL_PASSWORD;
         $mail->Port = MAIL_PORT;
 
-        // odesílatel a příjemce
+        // sender and recipient
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
         $mail->addAddress($toEmail, $toName);
 
-        // obsah emailu
+        // email content
         $mail->isHTML(true);
         $mail->Subject = 'Here is your password reset link';
         $mail->Body = "
-            <h2>Hello {$toName}!</h2>
+            <h1>Hello {$toName}!</h1>
             <p>Please click the button below to reset your password:</p>
-            <a href='{$resetUrl}' 
-               style='background:#198754; color:white; padding:12px 24px; 
-                      border-radius:4px; text-decoration:none; font-weight:bold;'>
+            <a href='{$resetUrl}'
+            style='background:#198754; color:white; padding:12px 24px;
+                    border-radius:4px; text-decoration:none; font-weight:bold;'>
                 Reset Password
             </a>
             <p>This link will expire in <strong>1 hour</strong>.</p>
-            <p>If you did not create an account, ignore this email.</p>
+            <p>If you did not request a password reset, ignore this email.</p>
         ";
         $mail->send();
 
@@ -128,7 +127,6 @@ function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUr
         error_log("Email send failed: " . $mail->ErrorInfo);
     }
     
-
 
 }
 

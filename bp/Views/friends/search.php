@@ -48,5 +48,5 @@
         <div class="btn-group">
             <a href="friends" class="btn-group__item">Back to Friends</a>
         </div>
-
+    </div>
 </main>

@@ -38,7 +38,7 @@ function showConfirm(message, onConfirm) {
     };
 }
 
-
+// data confirm for all buttons
 document.addEventListener('click', function (e) {
     const btn = e.target.closest('button[data-confirm]');
     if (!btn || btn._confirmed) {
@@ -81,10 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
         createEventForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            const name     = document.getElementById('event_name').value.trim();
-            const status   = document.getElementById('status').value;
-            const start    = document.getElementById('start_at')?.value;
-            const end      = document.getElementById('end_at')?.value;
+            const name = document.getElementById('event_name').value.trim();
+            const status = document.getElementById('status').value;
+            const start = document.getElementById('start_at')?.value;
+            const end = document.getElementById('end_at')?.value;
             const deadline = document.getElementById('voting_deadline')?.value;
 
             if (!name) {
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const starts = document.querySelectorAll('input[name="poll_starts[]"]');
-                const ends   = document.querySelectorAll('input[name="poll_ends[]"]');
+                const ends = document.querySelectorAll('input[name="poll_ends[]"]');
                 let validCount = 0;
 
                 starts.forEach((s, i) => {
@@ -163,10 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             e.preventDefault();
 
-            const name     = document.getElementById('event_name').value.trim();
-            const status   = document.getElementById('status').value;
-            const start    = document.getElementById('start_at')?.value;
-            const end      = document.getElementById('end_at')?.value;
+            const name = document.getElementById('event_name').value.trim();
+            const status = document.getElementById('status').value;
+            const start = document.getElementById('start_at')?.value;
+            const end = document.getElementById('end_at')?.value;
             const deadline = document.getElementById('voting_deadline')?.value;
 
             if (!name) {
@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const starts = document.querySelectorAll('input[name="poll_starts[]"]');
-                const ends   = document.querySelectorAll('input[name="poll_ends[]"]');
+                const ends = document.querySelectorAll('input[name="poll_ends[]"]');
                 let validCount = 0;
 
                 starts.forEach((s, i) => {
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginForm) {
         loginForm.addEventListener('submit', function (e) {
-            const email  = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value.trim();
             const passwd = document.getElementById('password').value;
 
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -271,14 +271,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (registerForm) {
         registerForm.addEventListener('submit', function (e) {
             const firstName = document.getElementById('first_name').value.trim();
-            const surname   = document.getElementById('surname').value.trim();
-            const email     = document.getElementById('email').value.trim();
-            const passwd    = document.getElementById('passwd').value;
-            const repeat    = document.getElementById('repeatpasswd').value;
+            const surname = document.getElementById('surname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const passwd = document.getElementById('passwd').value;
+            const repeat = document.getElementById('repeatpasswd').value;
             const birthYear = parseInt(document.getElementById('birth_year').value);
-            const gender    = document.getElementById('gender').value;
+            const gender = document.getElementById('gender').value;
             const currentYear = new Date().getFullYear();
-            const tel       = document.getElementById('tel').value.trim();
+            const tel = document.getElementById('tel').value.trim();
 
             if (!firstName || !surname) {
                 e.preventDefault();
@@ -343,12 +343,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (document.activeElement?.name === 'submit_delete_profile') return;
 
             const firstName = document.getElementById('first_name').value.trim();
-            const surname   = document.getElementById('surname').value.trim();
-            const email     = document.getElementById('email').value.trim();
-            const passwd    = document.getElementById('passwd').value;
+            const surname = document.getElementById('surname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const passwd = document.getElementById('passwd').value;
             const birthYear = parseInt(document.getElementById('birth_year').value);
             const currentYear = new Date().getFullYear();
-            const tel       = document.getElementById('tel').value.trim();
+            const tel = document.getElementById('tel').value.trim();
 
             if (!firstName || !surname) {
                 e.preventDefault();
@@ -437,42 +437,42 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
- /*
- * -----------------------------------------
- * ČÁST 9: KALENDÁŘ (FULLCALENDAR)
- * -----------------------------------------
- */
+    /*
+    * -----------------------------------------
+    * ČÁST 9: KALENDÁŘ (FULLCALENDAR)
+    * -----------------------------------------
+    */
 
-const calendarEl = document.getElementById('calendar');
+    const calendarEl = document.getElementById('calendar');
 
-if (calendarEl) {
+    if (calendarEl) {
 
-    const isMobile = () => window.innerWidth < 769; // v css mam 768px, tady je <, takže proto 769
+        const isMobile = () => window.innerWidth < 769; // v css mam 768px, tady je <, takže proto 769
 
-    function getInitialView() {
-        return isMobile() ? 'listMonth' : 'dayGridMonth';
-    }
+        function getInitialView() {
+            return isMobile() ? 'listMonth' : 'dayGridMonth';
+        }
 
-    function getToolbar() {
-        if (isMobile()) {
+        function getToolbar() {
+            if (isMobile()) {
+                return {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'listDay,listWeek,listMonth'
+                };
+            }
             return {
-                left: 'prev,next',
+                left: 'prev,next today',
                 center: 'title',
-                right: 'listDay,listWeek,listMonth'
+                right: 'timeGridDay,timeGridWeek,dayGridMonth'
             };
         }
-        return {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'timeGridDay,timeGridWeek,dayGridMonth'
-        };
-    }
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: getInitialView(),
-        headerToolbar: getToolbar(),
-        locale: 'en',
-        firstDay: 1,
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: getInitialView(),
+            headerToolbar: getToolbar(),
+            locale: 'en',
+            firstDay: 1,
             buttonText: {
                 listDay: 'Day',
                 listWeek: 'Week',
@@ -481,34 +481,34 @@ if (calendarEl) {
                 timeGridWeek: 'Week',
                 dayGridMonth: 'Month'
             },
-        noEventsContent: 'No events to display.',
-        events: window.myCalendarEvents || [],
-        eventClick: function (info) {
-            window.location.href = window.domena + "/events/detail/" + info.event.id;
-        },
-        windowResize: function () {
-            calendar.changeView(getInitialView());
-            calendar.setOption('headerToolbar', getToolbar());
-        }
-    });
+            noEventsContent: 'No events to display.',
+            events: myCalendarEvents || [],
+            eventClick: function (info) {
+                window.location.href = domena + "/events/detail/" + info.event.id;
+            },
+            windowResize: function () {
+                calendar.changeView(getInitialView());
+                calendar.setOption('headerToolbar', getToolbar());
+            }
+        });
 
-    calendar.render();
-    
-}
+        calendar.render();
+
+    }
 
     /*
      * -----------------------------------------
      * ČÁST 8: PŘEPÍNÁNÍ SEKCÍ CONFIRMED / PLANNING
      * -----------------------------------------
      */
-    const statusSelect     = document.getElementById("status");
+    const statusSelect = document.getElementById("status");
     const sectionConfirmed = document.getElementById("section-confirmed");
-    const sectionPlanning  = document.getElementById("section-planning");
+    const sectionPlanning = document.getElementById("section-planning");
 
     if (statusSelect && sectionConfirmed && sectionPlanning) {
         function toggleStatusSections() {
             sectionConfirmed.style.display = statusSelect.value === 'confirmed' ? 'block' : 'none';
-            sectionPlanning.style.display  = statusSelect.value === 'planning'  ? 'block' : 'none';
+            sectionPlanning.style.display = statusSelect.value === 'planning' ? 'block' : 'none';
         }
         toggleStatusSections();
         statusSelect.addEventListener("change", toggleStatusSections);
@@ -520,8 +520,8 @@ if (calendarEl) {
      * ČÁST 9: PŘIDÁVÁNÍ / ODEBÍRÁNÍ TERMÍNŮ DO ANKETY
      * -----------------------------------------
      */
-    const addOptionBtn   = document.getElementById("add-option-btn");
-    const pollContainer  = document.getElementById('poll-options-container');
+    const addOptionBtn = document.getElementById("add-option-btn");
+    const pollContainer = document.getElementById('poll-options-container');
 
     if (pollContainer) {
         pollContainer.addEventListener('click', function (e) {
@@ -577,7 +577,7 @@ if (calendarEl) {
      * ČÁST 11: VYHLEDÁVÁNÍ V TABULKÁCH
      * -----------------------------------------
      */
-    const eventsSearch  = document.getElementById('eventsSearch');
+    const eventsSearch = document.getElementById('eventsSearch');
     const friendsSearch = document.getElementById('friendsSearch');
 
     [eventsSearch, friendsSearch].forEach(input => {
@@ -637,7 +637,7 @@ if (calendarEl) {
      * -----------------------------------------
      */
     const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const navDropdown  = document.getElementById('navDropdown');
+    const navDropdown = document.getElementById('navDropdown');
 
     if (hamburgerBtn && navDropdown) {
         hamburgerBtn.addEventListener('click', function () {

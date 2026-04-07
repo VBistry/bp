@@ -10,49 +10,49 @@
             <form id="editEventForm" action="<?php echo $domena . '/events/edit/' . $event_data['id']; ?>"
                 method="POST">
 
-                <ul class="form-layout">
+                <div class="form-layout">
 
-                    <li class="form-layout__item">
+                    <div class="form-layout__item">
                         <label for="event_name" class="form-layout__label">Event Name:</label>
                         <input type="text" id="event_name" name="event_name" class="form-layout__input"
                             value="<?php echo htmlspecialchars($event_data['event_name']); ?>">
-                    </li>
+                    </div>
 
-                    <li class="form-layout__item">
+                    <div class="form-layout__item">
                         <label for="location" class="form-layout__label">Location:</label>
                         <input type="text" id="location" name="location" class="form-layout__input"
                             value="<?php echo htmlspecialchars($event_data['location'] ?? ''); ?>">
-                    </li>
+                    </div>
 
-                    <li class="form-layout__item">
+                    <div class="form-layout__item">
                         <label for="status" class="form-layout__label">Status:</label>
                         <select name="status" id="status" class="form-layout__input">
                             <option value="confirmed" <?php echo $event_data['status'] === 'confirmed' ? 'selected' : ''; ?>>Confirmed</option>
                             <option value="planning" <?php echo $event_data['status'] === 'planning' ? 'selected' : ''; ?>>Planning</option>
                             <option value="cancelled" <?php echo $event_data['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
                         </select>
-                    </li>
+                    </div>
 
                     <div id="section-confirmed">
-                        <li class="form-layout__item">
+                        <div class="form-layout__item">
                             <label for="start_at" class="form-layout__label">Start Time:</label>
                             <input type="datetime-local" id="start_at" name="start_at" class="form-layout__input"
                                 value="<?php echo !empty($event_data['start_at']) ? date('Y-m-d\TH:i', strtotime($event_data['start_at'])) : ''; ?>">
-                        </li>
-                        <li class="form-layout__item">
+                        </div>
+                        <div class="form-layout__item">
                             <label for="end_at" class="form-layout__label">End Time:</label>
                             <input type="datetime-local" id="end_at" name="end_at" class="form-layout__input"
                                 value="<?php echo !empty($event_data['end_at']) ? date('Y-m-d\TH:i', strtotime($event_data['end_at'])) : ''; ?>">
-                        </li>
+                        </div>
                     </div>
 
                     <div class="section-planning" id="section-planning">
-                        <li class="form-layout__item">
+                        <div class="form-layout__item">
                             <label for="voting_deadline" class="form-layout__label">Voting Deadline:</label>
                             <input type="datetime-local" id="voting_deadline" name="voting_deadline"
                                 class="form-layout__input"
                                 value="<?php echo !empty($event_data['voting_deadline']) ? date('Y-m-d\TH:i', strtotime($event_data['voting_deadline'])) : ''; ?>">
-                        </li>
+                        </div>
 
                         <div class="proposed-dates">
                             <h2>Proposed Dates</h2>
@@ -91,15 +91,15 @@
                         </div>
                     </div>
 
-                    <li class="form-layout__item form-layout__item--description">
+                    <div class="form-layout__item form-layout__item--description">
                         <label for="description_event" class="form-layout__label">Description:</label>
                         <textarea id="description_event" name="description_event"
                             class="form-layout__input form-layout__input--description"
                             rows="5"><?php echo htmlspecialchars($event_data['description_event'] ?? ''); ?></textarea>
-                    </li>
-                </ul>
+                    </div>
+                </div>
 
-                <h3>Invite Friends</h3>
+                <h2>Invite Friends</h2>
                 <?php if (!empty($friends_list)): ?>
                     <div class="friends-invite-list">
                         <?php foreach ($friends_list as $friend): ?>

@@ -3,9 +3,7 @@
 include 'Models/auth.php';
 include 'Models/user.php';
 
-/* ------------------------------------------------------------------
-   1. LOGIKA PRO PŘIHLÁŠENÍ (LOGIN)
-   ------------------------------------------------------------------ */
+// --- LOGIN ---
 if ($router['method'] == 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,7 +33,7 @@ if ($router['method'] == 'login') {
 
         if ($user && password_verify($passwd, $user['passwd'])) {
 
-            $_SESSION['autorized'] = true;
+            $_SESSION['authorized'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['first_name'] = $user['first_name'];
             $_SESSION['surname'] = $user['surname'];
@@ -59,9 +57,7 @@ if ($router['method'] == 'login') {
     include 'Views/auth/login.php';
 
 
-    /* ------------------------------------------------------------------
-       2. LOGIKA PRO REGISTRACI (REGISTER)
-       ------------------------------------------------------------------ */
+// --- REGISTER ---
 } elseif ($router['method'] == 'register') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -71,7 +67,7 @@ if ($router['method'] == 'login') {
         $email = trim($_POST['email'] ?? '');
         $passwd = $_POST['passwd'] ?? '';
         $repeatPasswd = $_POST['repeatpasswd'] ?? '';
-        $birth_year = (int) ($_POST['birth_year'] ?? 0);
+        $birth_year = ($_POST['birth_year'] ?? 0);
         $tel = trim($_POST['tel'] ?? '');
         $description_user = trim($_POST['description_user'] ?? '');
         $gender = $_POST['gender'] ?? 'other';
@@ -137,7 +133,7 @@ if ($router['method'] == 'login') {
             exit;
         }
 
-        // Vše OK — ukládáme
+        // All valid — save user
         $passwordHash = password_hash($passwd, PASSWORD_DEFAULT);
 
         try {
@@ -157,7 +153,7 @@ if ($router['method'] == 'login') {
             if ($success) {
                 $newUserId = $pdo->lastInsertId();
 
-                $_SESSION['autorized'] = true;
+                $_SESSION['authorized'] = true;
                 $_SESSION['user_id'] = $newUserId;
                 $_SESSION['first_name'] = $firstName;
                 $_SESSION['surname'] = $surname;
@@ -167,7 +163,7 @@ if ($router['method'] == 'login') {
 
                 session_regenerate_id(true);
 
-                // vygeneruj verification URL a pošli email
+                // Generate verification URL and send email
                 $verificationUrl = $domena . '/' . generateVerificationUrl($newUserId, $email);
                 sendVerificationEmail($email, $firstName, $verificationUrl);
 
@@ -192,24 +188,18 @@ if ($router['method'] == 'login') {
     include 'Views/auth/register.php';
 
 
-    /* ------------------------------------------------------------------
-    3. ODHLÁŠENÍ
-       ------------------------------------------------------------------ */
+// --- LOGOUT ---
 } elseif ($router['method'] == 'logout') {
     session_destroy();
     $pdo = null;
     header("Location: " . $domena . "/auth/login");
     exit;
 
-    /* ------------------------------------------------------------------
-       4. ZOBRAZENÍ STRÁNKY "ZKONTROLUJ EMAIL"
-       ------------------------------------------------------------------ */
+// --- VERIFY EMAIL PAGE ---
 } elseif ($router['method'] == 'verify-email') {
     include 'Views/auth/verify-email.php';
 
-    /* ------------------------------------------------------------------
-       5. OVĚŘENÍ EMAILU (kliknutí na odkaz)
-       ------------------------------------------------------------------ */
+// --- VERIFY EMAIL ---
 } elseif ($router['method'] == 'verify') {
 
     $userId = $router['params'][0] ?? null;
@@ -223,21 +213,21 @@ if ($router['method'] == 'login') {
         exit;
     }
 
-    if (!verifySignedUrl((int) $userId, $hash, (int) $expires, $signature)) {
+    if (!verifySignedUrl($userId, $hash, (int) $expires, $signature)) {
         setFlash('error', 'Verification link is invalid or has expired.');
         header("Location: " . $domena . "/auth/verify-email");
         exit;
     }
 
-    // ověření OK — nastavit v DB
-    $user = getUserById($pdo, (int) $userId);
+    // Verification OK — update DB
+    $user = getUserById($pdo, $userId);
     if (!$user || sha1($user['email']) !== $hash) {
         setFlash('error', 'Invalid verification link.');
         header("Location: " . $domena . "/auth/verify-email");
         exit;
     }
 
-    verifyUserEmail($pdo, (int) $userId);
+    verifyUserEmail($pdo, $userId);
     $_SESSION['verified_email'] = true;
 
     setFlash('success', 'Email verified successfully!');
@@ -257,9 +247,7 @@ if ($router['method'] == 'login') {
     exit;
 }
 
-/* ------------------------------------------------------------------
-   6. FORGOT PASSWORD — zobrazení formuláře + odeslání emailu
-   ------------------------------------------------------------------ */
+// --- FORGOT PASSWORD ---
 elseif ($router['method'] == 'forgot-password') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -273,9 +261,9 @@ elseif ($router['method'] == 'forgot-password') {
 
         $user = findUserByEmail($pdo, $email);
 
-        // záměrně stejná zpráva i když uživatel neexistuje — bezpečnost
+        // Intentionally same message even if user does not exist — security
         if ($user) {
-            $resetUrl = $domena . '/' . generatePasswordResetUrl($pdo, (int) $user['id'], $email);
+            $resetUrl = $domena . '/' . generatePasswordResetUrl($pdo, $user['id'], $email);
             sendPasswordResetEmail($email, $user['first_name'], $resetUrl);
         }
 
@@ -286,9 +274,7 @@ elseif ($router['method'] == 'forgot-password') {
 
     include 'Views/auth/forgot-password.php';
 
-/* ------------------------------------------------------------------
-   7. RESET PASSWORD — zobrazení formuláře + uložení nového hesla
-   ------------------------------------------------------------------ */
+// --- RESET PASSWORD ---
 } elseif ($router['method'] == 'reset-password') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -323,7 +309,7 @@ elseif ($router['method'] == 'forgot-password') {
         }
 
         $hashedPassword = password_hash($passwd, PASSWORD_DEFAULT);
-        updateUserPassword($pdo, (int) $user['id'], $hashedPassword);
+        updateUserPassword($pdo, $user['id'], $hashedPassword);
 
         setFlash('success', 'Password has been reset successfully. Please log in.');
         header("Location: " . $domena . "/auth/login");

@@ -55,7 +55,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
         }
     }
 
-    // Validace pozvaných - proti fake POST requestum
+    // Validate invitees - protection against fake POST requests
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
         $friends = getAllUserFriends($pdo, $_SESSION['user_id']);
@@ -75,7 +75,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
     if ($isSaved) {
         $new_event_id = $pdo->lastInsertId();
 
-        // Přidání pozvánek pro všechny vybrané uživatele
+        // Add invitations for all selected users
         foreach ($invited_ids as $inv_id) {
             addEventRegistration($pdo, $new_event_id, $inv_id, 'pending');
         }
@@ -173,7 +173,7 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
         }
     }
 
-    // Validace pozvaných — musí být přátelé
+    // Validate invitees - must be friends
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
         $friends = getAllUserFriends($pdo, $_SESSION['user_id']);
@@ -224,7 +224,7 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
 // --- DELETE ---
 if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_delete_event'])) {
 
-    $event_id = (int) ($router['params'][0] ?? 0);
+    $event_id = ($router['params'][0] ?? 0);
 
     if (!$event_id) {
         setFlash('error', 'Invalid event ID.');
@@ -255,9 +255,9 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
     exit;
 }
 
-// --- PŘIJETÍ POZVÁNKY ---
+// --- ACCEPT INVITATION ---
 if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_accept_invitation'])) {
-    $registration_id = (int) ($_POST['registration_id'] ?? 0);
+    $registration_id = ($_POST['registration_id'] ?? 0);
 
     $stmt = $pdo->prepare("UPDATE event_registrations SET status = 'attending' WHERE id = ? AND user_id = ?");
     if ($stmt->execute([$registration_id, $_SESSION['user_id']])) {
@@ -269,9 +269,9 @@ if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
     exit;
 }
 
-// --- ODMÍTNUTÍ POZVÁNKY ---
+// --- DECLINE INVITATION ---
 if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_decline_invitation'])) {
-    $registration_id = (int) ($_POST['registration_id'] ?? 0);
+    $registration_id = ($_POST['registration_id'] ?? 0);
 
     $stmt = $pdo->prepare("UPDATE event_registrations SET status = 'declined' WHERE id = ? AND user_id = ?");
     if ($stmt->execute([$registration_id, $_SESSION['user_id']])) {
@@ -283,14 +283,14 @@ if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
     exit;
 }
 
-// --- ÚČAST NA EVENTECH ---
+// --- PARTICIPATION ---
 if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_participation'])) {
 
     $participation_status = $_POST['submit_participation'];
-    $target_event_id = (int) ($_POST['event_id'] ?? 0);
+    $target_event_id = ($_POST['event_id'] ?? 0);
     $current_user_id = $_SESSION['user_id'];
 
-    $allowed_statuses = ['attending', 'maybe', 'declined'];
+    $allowed_statuses = ['attending', 'declined'];
 
     if ($target_event_id && in_array($participation_status, $allowed_statuses)) {
         updateParticipation($pdo, $target_event_id, $current_user_id, $participation_status);
@@ -306,7 +306,7 @@ if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 // --- CANCEL EVENT ---
 if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_cancel_event'])) {
 
-    $target_event_id = (int) ($router['params'][0] ?? 0);
+    $target_event_id = ($router['params'][0] ?? 0);
 
     if (!$target_event_id) {
         setFlash('error', 'Invalid event ID.');
@@ -336,11 +336,11 @@ if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
     exit;
 }
 
-// --- HLASOVÁNÍ V ANKETĚ ---
+// --- POLL VOTE ---
 if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_vote'])) {
 
-    $option_id = (int) ($_POST['poll_option'] ?? 0);
-    $target_event_id = (int) ($_POST['event_id'] ?? 0);
+    $option_id = ($_POST['poll_option'] ?? 0);
+    $target_event_id = ($_POST['event_id'] ?? 0);
     $current_user_id = $_SESSION['user_id'];
 
     if ($option_id && $target_event_id) {
@@ -354,9 +354,7 @@ if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
     exit;
 }
 
-// =========================================================================
-// VYKRESLOVÁNÍ STRÁNKY
-// =========================================================================
+// --- RENDER ---
 
 include 'Views/includes/head.php';
 include 'Views/includes/navbar.php';
@@ -367,7 +365,7 @@ if ($router['method'] === 'create') {
 
 } elseif ($router['method'] === 'edit') {
 
-    $event_id = (int) ($router['params'][0] ?? 0);
+    $event_id = ($router['params'][0] ?? 0);
 
     if (!$event_id) {
         setFlash('error', 'No event ID specified.');
@@ -394,7 +392,7 @@ if ($router['method'] === 'create') {
 
 } elseif ($router['method'] === 'detail') {
 
-    $event_id = (int) ($router['params'][0] ?? 0);
+    $event_id = ($router['params'][0] ?? 0);
 
     if (!$event_id) {
         setFlash('error', 'No event ID specified.');
@@ -437,6 +435,8 @@ if ($router['method'] === 'create') {
     } else {
         $display_status = ['label' => 'Upcoming', 'badge' => 'upcoming'];
     }
+
+    $user_participation_status = getUserRegistrationStatus($pdo, $event_id, $_SESSION['user_id']);
 
     include 'Views/events/details.php';
 

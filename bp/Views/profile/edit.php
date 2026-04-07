@@ -27,7 +27,7 @@
                         </h2>
                     </div>
                     <div class="grid--primary">
-                        <label for="avatar" class="grid--primary__item__label">Upload new photo:</label>
+                        <label for="avatar" class="grid--primary__label">Upload new photo:</label>
                         <div class="grid--primary__item">
                             <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/webp">
                             <span class="text--muted">Max 2MB, JPEG, PNG, WebP</span>

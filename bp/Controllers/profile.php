@@ -2,7 +2,12 @@
 
 include 'Models/user.php';
 
-// --- SMAZÁNÍ ÚČTU ---
+if (!isset($_SESSION['user_id'])) {
+    header("Location: " . $domena . "/auth/login");
+    exit;
+}
+
+// --- DELETE ACCOUNT ---
 if (isset($_POST['submit_delete_profile'])) {
     deleteUserById($pdo, $_SESSION['user_id']);
     session_destroy();
@@ -10,10 +15,10 @@ if (isset($_POST['submit_delete_profile'])) {
     exit;
 }
 
-// --- AKTUALIZACE PROFILU ---
+// --- UPDATE PROFILE ---
 if (isset($_POST['submit_update_profile'])) {
 
-    // Zpracování avataru pokud byl nahrán
+    // Process avatar if uploaded
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -57,12 +62,12 @@ if (isset($_POST['submit_update_profile'])) {
         }
     }
 
-    // Načtení a ošetření vstupů
+    // Read and sanitize inputs
     $first_name = trim($_POST['first_name'] ?? '');
     $surname = trim($_POST['surname'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $tel = trim($_POST['tel'] ?? '');
-    $birth_year = (int) ($_POST['birth_year'] ?? 0);
+    $birth_year = ($_POST['birth_year'] ?? 0);
     $description = trim($_POST['description_user'] ?? '');
     $gender = $_POST['gender'] ?? 'other';
     $passwd = $_POST['passwd'] ?? '';
@@ -110,7 +115,7 @@ if (isset($_POST['submit_update_profile'])) {
         exit;
     }
 
-    // Heslo se mění jen pokud ho uživatel vyplnil
+    // Password is only changed if user filled it in
     $passwordHash = null;
     if (!empty($passwd)) {
         if (strlen($passwd) < 8 || strlen($passwd) > 72) {
@@ -129,13 +134,13 @@ if (isset($_POST['submit_update_profile'])) {
         'birth_year' => $birth_year,
         'description_user' => $description,
         'gender' => $gender,
-        'passwd' => $passwordHash, // null = heslo se nemění
+        'passwd' => $passwordHash, // null = password unchanged
     ];
 
     $isUpdated = updateUser($pdo, $_SESSION['user_id'], $clean_data);
 
     if ($isUpdated) {
-        // Aktualizujeme i session, aby navbar zobrazoval nové jméno
+        // Update session so navbar reflects new name
         $_SESSION['first_name'] = $first_name;
         $_SESSION['surname'] = $surname;
         $_SESSION['email'] = $email;
@@ -149,17 +154,12 @@ if (isset($_POST['submit_update_profile'])) {
     exit;
 }
 
-// =========================================================================
-// VYKRESLOVÁNÍ STRÁNKY
-// =========================================================================
+// --- RENDER ---
 
 include 'Views/includes/head.php';
 include 'Views/includes/navbar.php';
 
-$user_data = null;
-if (isset($_SESSION['user_id'])) {
-    $user_data = getUserById($pdo, $_SESSION['user_id']);
-}
+$user_data = getUserById($pdo, $_SESSION['user_id']);
 
 if ($router['method'] === 'edit') {
     if ($user_data) {

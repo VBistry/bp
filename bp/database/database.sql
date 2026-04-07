@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS users;
 CREATE DATABASE IF NOT EXISTS planner CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE planner;
 
--- 1. UŽIVATELÉ
+--- USERS ---
 CREATE TABLE users (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(100) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE users (
     password_reset_expires_at TIMESTAMP NULL DEFAULT NULL
 );
 
--- 2. UDÁLOSTI
+--- EVENTS ---
 CREATE TABLE events (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     event_name VARCHAR(150) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE events (
     FOREIGN KEY (creator) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 3. MOŽNOSTI (VARIANTY TERMÍNŮ)
+--- POLL OPTIONS ---
 CREATE TABLE event_poll_options (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     event_id INTEGER NOT NULL,
@@ -58,11 +58,11 @@ CREATE TABLE event_poll_options (
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 4. HLASY (ZMĚNA: Pouze jedna volba na uživatele a event)
+-- POLL VOTES ---
 CREATE TABLE event_poll_votes (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     event_id INTEGER NOT NULL,
-    option_id INTEGER NOT NULL,  -- Kterou variantu zvolil
+    option_id INTEGER NOT NULL,  -- Which option the user voted for
     user_id INTEGER NOT NULL,
     voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -71,7 +71,7 @@ CREATE TABLE event_poll_votes (
     UNIQUE(user_id, event_id)
 );
 
--- 5. POZVÁNKY / REGISTRACE
+--- INVITAIONS/REGISTRATIONS ---
 CREATE TABLE event_registrations (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
@@ -83,6 +83,7 @@ CREATE TABLE event_registrations (
     UNIQUE(user_id, event_id)
 );
 
+--- FRIENDSHIPS ---
 CREATE TABLE friendships(
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_id_sender INTEGER NOT NULL,
@@ -90,7 +91,7 @@ CREATE TABLE friendships(
     FOREIGN KEY (user_id_sender) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (user_id_receiver) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     friends_since TIMESTAMP NULL,
-    status ENUM('pending', 'accepted', 'declined', 'blocked') DEFAULT 'pending',
+    status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending',
     UNIQUE(user_id_sender,  user_id_receiver)
 );
 

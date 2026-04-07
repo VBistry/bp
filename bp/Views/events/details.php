@@ -8,7 +8,7 @@
                 <a href="events/edit/<?php echo $event_data['id']; ?>" class="btn-group__item profile-header-card__edit-btn">Edit ✎</a>
             <?php endif; ?>
 
-            <h1 class="event-detail__title"><?php echo htmlspecialchars($event_data['event_name']); ?></h1>
+            <h2 class="event-detail__title"><?php echo htmlspecialchars($event_data['event_name']); ?></h2>
 
             <span class="event-badge event-badge--<?php echo $display_status['badge']; ?>">
                 <?php echo $display_status['label']; ?>
@@ -180,11 +180,31 @@
             <a href="events/edit/<?php echo $event_data['id']; ?>" class="fixed-btn fixed-btn--edit fixed-btn--mobile-only">✎</a>
         <?php endif; ?>
 
+        <!-- SEKCE: Moje účast -->
+        <?php if ($_SESSION['user_id'] !== $event_data['creator'] && $user_participation_status !== null && $event_data['status'] !== 'cancelled'): ?>
+            <section class="section-card">
+                <h3 class="section-card__title">My Participation</h3>
+                <form action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST">
+                    <input type="hidden" name="event_id" value="<?php echo $event_data['id']; ?>">
+                    <div class="btn-group">
+                        <button type="submit" name="submit_participation" value="attending"
+                            class="btn-group__item <?php echo $user_participation_status === 'attending' ? 'btn-group__item--primary' : ''; ?>">
+                            Going
+                        </button>
+<button type="submit" name="submit_participation" value="declined"
+                            class="btn-group__item <?php echo $user_participation_status === 'declined' ? 'btn-group__item--danger' : ''; ?>">
+                            Not Going
+                        </button>
+                    </div>
+                </form>
+            </section>
+        <?php endif; ?>
+
         <!-- AKCE -->
         <div class="btn-group">
             
             <?php if (($_SESSION['user_id'] === $event_data['creator'] || $user_data['role'] === 'admin') && $event_data['status'] !== 'cancelled'): ?>
-                <form action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST" class="full-width" >
+                <form action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST">
                     <button type="submit" name="submit_cancel_event"
                         class="btn-group__item btn-group__item--danger"
                         data-confirm="Are you sure you want to cancel this event?">

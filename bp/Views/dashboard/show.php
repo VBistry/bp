@@ -1,4 +1,3 @@
-
 <main class="content--wide">
     <h1>Your Planner Dashboard</h1>
     <span>Your upcoming events today:</span>
@@ -17,8 +16,8 @@
             <tbody>
                 <?php foreach ($events_today as $event): ?>
                     <tr>
-                        <td><a
-                                href="events/detail/<?php echo $event['id']; ?>"><?php echo htmlspecialchars($event['event_name']); ?></a>
+                        <td>
+                            <a href="events/detail/<?php echo $event['id']; ?>"><?php echo htmlspecialchars($event['event_name']); ?></a>
                         </td>
                         <td><?php echo !empty($event['start_at']) ? date('H:i', strtotime($event['start_at'])) : 'To be decided'; ?>
                             -
@@ -35,7 +34,7 @@
                         </td>
                         <td>
                             <a href="events/detail/<?php echo $event['id']; ?>">
-                                                <img class="nav-icon table-icon" src="images/view-icon.png" title="View event"></a>
+                                <img class="nav-icon table-icon" src="images/view-icon.png" title="View event"></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

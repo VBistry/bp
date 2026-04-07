@@ -6,7 +6,7 @@
 
     <!-- SEKCE: Příchozí žádosti -->
     <?php if (!empty($pending_requests)): ?>
-        <div class="section-card">
+        <section class="section-card">
             <h3 class="section-card__title">Pending Requests (<?php echo count($pending_requests); ?>)</h3>
             <?php foreach ($pending_requests as $request): ?>
                 <div class="friend-request-row">
@@ -17,20 +17,20 @@
                         <form action="<?php echo $domena; ?>/friends" method="POST" class="friend-request-row__form">
                             <input type="hidden" name="friendship_id" value="<?php echo $request['friendship_id']; ?>">
                             <button type="submit" name="submit_accept_request"
-                                class="btn-group__item btn-group__item--primary btn-group__item--small">Accept</button>
+                                class="btn-group__item btn-group__item--primary">Accept</button>
                         </form>
                         <form action="<?php echo $domena; ?>/friends" method="POST" class="friend-request-row__form">
                             <input type="hidden" name="friendship_id" value="<?php echo $request['friendship_id']; ?>">
                             <button type="submit" name="submit_decline_request"
-                                class="btn-group__item btn-group__item--small"
+                                class="btn-group__item"
                                 data-confirm="Are you sure you want to decline this friend request?">Decline</button>
                         </form>
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
+        </section>
         <?php elseif (!empty($sent_requests)): ?>
-            <div class="section-card">
+            <section class="section-card">
             <h3 class="section-card__title">Sent Requests (<?php echo count($sent_requests); ?>)</h3>
             <?php foreach ($sent_requests as $request): ?>
                 <div class="friend-request-row">
@@ -39,7 +39,7 @@
                     </span>
                 </div>
             <?php endforeach; ?>
-        </div>
+        </section>
 
     <?php endif; ?>
 

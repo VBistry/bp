@@ -6,7 +6,7 @@
 
     <!-- DESKTOP: původní lišta -->
     <ul class="navbar__list">
-        <li class="navbar__item--left">
+        <li class="navbar__item--left"> 
             <img class="nav-icon" src="images/today-icon.png" alt="Today">
             <span><?php echo date('d.m.Y'); ?></span>
         </li>

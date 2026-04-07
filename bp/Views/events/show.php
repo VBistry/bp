@@ -33,12 +33,12 @@
                             <form action="<?php echo $domena; ?>/events/show" method="POST" class="friend-request-row__form">
                                 <input type="hidden" name="registration_id" value="<?php echo $inv['registration_id']; ?>">
                                 <button type="submit" name="submit_accept_invitation"
-                                    class="btn-group__item btn-group__item--primary btn-group__item--small">Accept</button>
+                                    class="btn-group__item btn-group__item--primary">Accept</button>
                             </form>
                             <form action="<?php echo $domena; ?>/events/show" method="POST" class="friend-request-row__form">
                                 <input type="hidden" name="registration_id" value="<?php echo $inv['registration_id']; ?>">
                                 <button type="submit" name="submit_decline_invitation"
-                                    class="btn-group__item btn-group__item--small"
+                                    class="btn-group__item"
                                     data-confirm="Are you sure you want to decline this invitation?">Decline</button>
                             </form>
                         </div>
