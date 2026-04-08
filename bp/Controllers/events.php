@@ -55,7 +55,7 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
         }
     }
 
-    // Validate invitees - protection against fake POST requests
+    // Validate invitees
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
         $friends = getAllUserFriends($pdo, $_SESSION['user_id']);
@@ -71,14 +71,12 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 
     $isSaved = createEvent($pdo, $_SESSION['user_id'], $event_name, $location, $start_at, $end_at, $status, $description, $voting_deadline);
 
-    // po supesnem vytvoreni evnetu
     if ($isSaved) {
         $new_event_id = $pdo->lastInsertId();
 
         // Creator is automatically attending
         addEventRegistration($pdo, $new_event_id, $_SESSION['user_id'], 'attending');
 
-        // Add invitations for all selected users
         foreach ($invited_ids as $inv_id) {
             addEventRegistration($pdo, $new_event_id, $inv_id, 'pending');
         }

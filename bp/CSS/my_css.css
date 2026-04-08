@@ -563,7 +563,7 @@ main {
     border-bottom: 1px solid #f0f0f0;
 }
 
-/* Value grid — shared between profile and event detail */
+/* grid */
 .grid--primary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1099,7 +1099,10 @@ main {
         margin-right: 0;
     }
 
-    /* Navbar */
+    .btn--full-width {
+        width: 100%;
+    }
+
     .navbar__menu {
         padding: 0;
     }

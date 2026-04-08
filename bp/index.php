@@ -6,9 +6,11 @@ git add .
 git commit -m "message"
 git push -u origin main --force
 
+
 pridat znovunacteni vice nez 100 eventu nebudu zobrazovat(to same kamaradi)
 mozna pridat zakliknuti vice event(odstranit napr. z kalendare) a smazat je hromadne
 to same u pozivani kamaradu na eventy atd...
+
 
 https://www.flaticon.com/search?word=edit&color=color - iconky
 bootstrap frontend framework - https://adminlte.io/blog/bootstrap-login-forms/

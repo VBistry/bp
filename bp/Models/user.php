@@ -92,7 +92,7 @@ function updateUser(PDO $pdo, int $user_id, array $data)
     }
 }
 
-// Soft delete — sets deleted_at instead of actually deleting
+// Soft delete
 function deleteUserById(PDO $pdo, int $user_id)
 {
     try {

@@ -204,7 +204,7 @@
         <div class="btn-group">
             
             <?php if (($_SESSION['user_id'] === $event_data['creator'] || $user_data['role'] === 'admin') && $event_data['status'] !== 'cancelled'): ?>
-                <form action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST">
+                <form class="btn--full-width" action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST">
                     <button type="submit" name="submit_cancel_event"
                         class="btn-group__item btn-group__item--danger"
                         data-confirm="Are you sure you want to cancel this event?">

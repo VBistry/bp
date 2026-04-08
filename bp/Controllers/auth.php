@@ -10,7 +10,6 @@ if ($router['method'] == 'login') {
         $email = trim($_POST['email'] ?? '');
         $passwd = $_POST['passwd'] ?? '';
 
-        // Validace
         if (empty($email) || empty($passwd)) {
             setFlash('error', 'Please fill in your email and password.');
             header("Location: " . $domena . "/auth/login");

@@ -73,7 +73,7 @@ function removeFriend(PDO $pdo, int $current_user_id, int $friend_id)
         $stmt = $pdo->prepare("
             DELETE FROM friendships
             WHERE (user_id_sender = ? AND user_id_receiver = ?)
-               OR (user_id_sender = ? AND user_id_receiver = ?)
+            OR (user_id_sender = ? AND user_id_receiver = ?)
         ");
         return $stmt->execute([$current_user_id, $friend_id, $friend_id, $current_user_id]);
     } catch (PDOException $e) {

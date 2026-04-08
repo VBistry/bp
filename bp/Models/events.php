@@ -11,7 +11,7 @@ function getEventById(PDO $pdo, int $event_id)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Returns events for FullCalendar (own and invited)
+// Returns events for FullCalendar
 function getUserEvents(PDO $pdo, int $user_id)
 {
     $stmt = $pdo->prepare("
@@ -31,7 +31,7 @@ function getUserEvents(PDO $pdo, int $user_id)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Returns all events for list view (own, attending and declined)
+// Returns all events
 function getAllEventsForUser(PDO $pdo, int $user_id)
 {
     $stmt = $pdo->prepare("

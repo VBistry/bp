@@ -72,13 +72,11 @@ if (isset($_POST['submit_update_profile'])) {
     $gender = $_POST['gender'] ?? 'other';
     $passwd = $_POST['passwd'] ?? '';
 
-    // Whitelist pro gender
     $allowed_genders = ['male', 'female', 'other'];
     if (!in_array($gender, $allowed_genders)) {
         $gender = 'other';
     }
 
-    // Validace
     if (empty($first_name) || empty($surname) || empty($email)) {
         setFlash('error', 'First name, last name and email are required.');
         header("Location: " . $domena . "/profile/edit");

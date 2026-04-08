@@ -77,7 +77,7 @@
         <!-- AKCE -->
         <div class="btn-group">
             
-            <form action="<?php echo $domena; ?>/friends" method="POST">
+            <form class="btn--full-width" action="<?php echo $domena; ?>/friends" method="POST">
                 <input type="hidden" name="friend_id" value="<?php echo $friend_data['id']; ?>">
                 <button type="submit" name="submit_remove_friend" class="btn-group__item btn-group__item--danger"
                     data-confirm="Are you sure you want to remove this friend?">
