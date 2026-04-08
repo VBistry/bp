@@ -6,6 +6,7 @@
     <base href="<?php echo $domena; ?>/">
     <title>Online event planner</title>
 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/my_css.css">
     
     <script>

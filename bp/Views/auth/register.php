@@ -20,7 +20,7 @@
                 <div class="signup-content">
 
                     <div class="signup-form">
-                        <h2 class="form-title">Register</h2>
+                        <h1 class="form-title">Register</h1>
 
                         <form method="POST" class="register-form" id="register-form"
                             action="<?php echo $domena; ?>/auth/register">

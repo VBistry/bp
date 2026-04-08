@@ -7,8 +7,7 @@
             enctype="multipart/form-data">
 
             <!-- SEKCE: Avatar upload -->
-            <section class="section-card">
-                <h3 class="section-card__title">Profile Picture</h3>
+            <div class="section-card">
                 <div class="profile-header-card--secondary">
                     <?php if (!empty($user_data['avatar_url']) && file_exists($user_data['avatar_url'])): ?>
                         <img src="<?php echo $domena . '/' . htmlspecialchars($user_data['avatar_url']); ?>" alt="Avatar"
@@ -34,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <!-- SEKCE: Osobní informace -->
             <section class="section-card">

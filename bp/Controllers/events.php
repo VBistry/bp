@@ -75,6 +75,9 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
     if ($isSaved) {
         $new_event_id = $pdo->lastInsertId();
 
+        // Creator is automatically attending
+        addEventRegistration($pdo, $new_event_id, $_SESSION['user_id'], 'attending');
+
         // Add invitations for all selected users
         foreach ($invited_ids as $inv_id) {
             addEventRegistration($pdo, $new_event_id, $inv_id, 'pending');
@@ -255,12 +258,11 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
     exit;
 }
 
-// --- ACCEPT INVITATION ---
-if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_accept_invitation'])) {
-    $registration_id = ($_POST['registration_id'] ?? 0);
+// --- ACCEPT INVITATION / CHANGE BACK TO ATTENDING ---
+if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['submit_accept_invitation']) || isset($_POST['submit_change_to_attending']))) {
+    $registration_id = intval($_POST['registration_id'] ?? 0);
 
-    $stmt = $pdo->prepare("UPDATE event_registrations SET status = 'attending' WHERE id = ? AND user_id = ?");
-    if ($stmt->execute([$registration_id, $_SESSION['user_id']])) {
+    if (acceptInvitation($pdo, $registration_id, $_SESSION['user_id'])) {
         setFlash('success', 'You are now attending this event!');
     } else {
         setFlash('error', 'Could not accept invitation.');
@@ -271,10 +273,9 @@ if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
 
 // --- DECLINE INVITATION ---
 if ($router['method'] === 'show' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_decline_invitation'])) {
-    $registration_id = ($_POST['registration_id'] ?? 0);
+    $registration_id = intval($_POST['registration_id'] ?? 0);
 
-    $stmt = $pdo->prepare("UPDATE event_registrations SET status = 'declined' WHERE id = ? AND user_id = ?");
-    if ($stmt->execute([$registration_id, $_SESSION['user_id']])) {
+    if (declineInvitation($pdo, $registration_id, $_SESSION['user_id'])) {
         setFlash('success', 'Invitation declined.');
     } else {
         setFlash('error', 'Could not decline invitation.');
@@ -448,9 +449,15 @@ if ($router['method'] === 'create') {
     $running_events = [];
     $upcoming_events = [];
     $past_events = [];
+    $declined_events = [];
     $current_time = time();
 
     foreach ($all_events as $event) {
+        if (($event['my_status'] ?? null) === 'declined') {
+            $declined_events[] = $event;
+            continue;
+        }
+
         if ($event['status'] === 'planning' || empty($event['start_at'])) {
             $voting_events[] = $event;
             continue;

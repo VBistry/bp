@@ -10,10 +10,6 @@ pridat znovunacteni vice nez 100 eventu nebudu zobrazovat(to same kamaradi)
 mozna pridat zakliknuti vice event(odstranit napr. z kalendare) a smazat je hromadne
 to same u pozivani kamaradu na eventy atd...
 
-tady se zeptat na grid--primary__item__label -- edit a profile - profile
-navbar__item - tam jeste taky img v odkazu - neni
-blokovani pratel
-
 https://www.flaticon.com/search?word=edit&color=color - iconky
 bootstrap frontend framework - https://adminlte.io/blog/bootstrap-login-forms/
 https://colorlib.com/etc/regform/colorlib-regform-7/index.html

@@ -3,7 +3,7 @@
 
 <div class="confirm-modal" id="confirmModal">
     <div class="confirm-modal__box">
-        <p class="confirm-modal__message" id="confirmMessage">Are you sure?</p>
+        <span class="confirm-modal__message" id="confirmMessage">Are you sure?</span>
         <div class="btn-group">
             <button class="btn-group__item btn-group__item--danger" id="confirmYes">Delete</button>
             <button class="btn-group__item" id="confirmNo">Cancel</button>

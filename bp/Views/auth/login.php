@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Sign In</h2>
+                        <h1 class="form-title">Sign In</h1>
 
                         <form method="POST" class="register-form" id="login-form" action="<?php echo $domena; ?>/auth/login">
 

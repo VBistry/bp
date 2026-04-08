@@ -4,7 +4,7 @@
     <div class="main-content">
 
         <!-- SEKCE: Hlavička profilu -->
-        <section class="profile-header-card">
+        <div class="profile-header-card">
             <?php if (!empty($user_data['avatar_url']) && file_exists($user_data['avatar_url'])): ?>
                 <a href="profile/edit" class="avatar-edit-wrapper">
                     <img src="<?php echo $domena . '/' . htmlspecialchars($user_data['avatar_url']); ?>" alt="Avatar"
@@ -28,15 +28,13 @@
                 </h2>
             </div>
             <a href="profile/edit" class="btn-group__item profile-header-card__edit-btn">Edit ✎</a>
-        </section>
+        </div>
 
         <a href="profile/edit" class="fixed-btn fixed-btn--edit fixed-btn--mobile-only">✎</a>
 
         <!-- SEKCE: Osobní informace -->
         <section class="section-card">
             <h3 class="section-card__title">Personal Information</h3>
-
-
             
             <div class="grid--primary">
                 <div class="grid--primary__item">

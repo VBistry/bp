@@ -220,6 +220,14 @@ main {
     min-height: 80vh;
 }
 
+.form-title{
+    font-size: 2rem;
+    padding: 0.1em;
+    border-bottom: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .auth-select {
     display: block;
     width: 100%;
@@ -546,11 +554,6 @@ main {
     margin: 0.5em 0;
 }
 
-.section-card--wide {
-    max-width: 1100px;
-    margin: 1.5em auto 0 auto;
-}
-
 .section-card__title {
     font-size: 1rem;
     font-weight: 700;
@@ -743,6 +746,13 @@ main {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
+}
+
+.events-table__title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #222;
+    margin: 0.8em;
 }
 
 .events-table thead tr {

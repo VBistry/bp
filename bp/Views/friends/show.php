@@ -7,7 +7,7 @@
     <!-- SEKCE: Příchozí žádosti -->
     <?php if (!empty($pending_requests)): ?>
         <section class="section-card">
-            <h3 class="section-card__title">Pending Requests (<?php echo count($pending_requests); ?>)</h3>
+            <h2 class="section-card__title">Pending Requests (<?php echo count($pending_requests); ?>)</h2>
             <?php foreach ($pending_requests as $request): ?>
                 <div class="friend-request-row">
                     <span class="friend-request-row__name">
@@ -31,7 +31,7 @@
         </section>
         <?php elseif (!empty($sent_requests)): ?>
             <section class="section-card">
-            <h3 class="section-card__title">Sent Requests (<?php echo count($sent_requests); ?>)</h3>
+            <h2 class="section-card__title">Sent Requests (<?php echo count($sent_requests); ?>)</h2>
             <?php foreach ($sent_requests as $request): ?>
                 <div class="friend-request-row">
                     <span class="friend-request-row__name">

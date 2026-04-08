@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="signin-content">
                     <div class="signin-form">
-                        <h2 class="form-title">Forgot Password</h2>
+                        <h1 class="form-title">Forgot Password</h1>
 
                         <form method="POST" action="<?php echo $domena; ?>/auth/forgot-password">
                             <div class="form-group">

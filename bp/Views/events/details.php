@@ -15,13 +15,13 @@
             </span>
         </div>
 
-        <!-- SEKCE: Hlasování (jen pro planning) -->
+        <!-- SEKCE: Hlasování -->
         <?php if ($event_data['status'] === 'planning'): ?>
             <section class="section-card">
                 <h3 class="section-card__title">Vote for the Best Date</h3>
-                <p class="event-detail__deadline">
+                <span class="event-detail__deadline">
                     Voting deadline: <strong><?php echo date('d.m.Y H:i', strtotime($event_data['voting_deadline'])); ?></strong>
-                </p>
+                </span>
 
                 <?php if (!empty($poll_options)): ?>
                     <form action="" method="POST">
@@ -181,7 +181,7 @@
         <?php endif; ?>
 
         <!-- SEKCE: Moje účast -->
-        <?php if ($_SESSION['user_id'] !== $event_data['creator'] && $user_participation_status !== null && $event_data['status'] !== 'cancelled'): ?>
+        <?php if ($event_data['status'] !== 'cancelled' && ($user_participation_status !== null || $_SESSION['user_id'] === $event_data['creator'])): ?>
             <section class="section-card">
                 <h3 class="section-card__title">My Participation</h3>
                 <form action="<?php echo $domena; ?>/events/detail/<?php echo $event_data['id']; ?>" method="POST">
@@ -191,7 +191,7 @@
                             class="btn-group__item <?php echo $user_participation_status === 'attending' ? 'btn-group__item--primary' : ''; ?>">
                             Going
                         </button>
-<button type="submit" name="submit_participation" value="declined"
+                        <button type="submit" name="submit_participation" value="declined"
                             class="btn-group__item <?php echo $user_participation_status === 'declined' ? 'btn-group__item--danger' : ''; ?>">
                             Not Going
                         </button>

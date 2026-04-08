@@ -31,20 +31,42 @@ function getUserEvents(PDO $pdo, int $user_id)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Returns all events for list view (own and invited)
+// Returns all events for list view (own, attending and declined)
 function getAllEventsForUser(PDO $pdo, int $user_id)
 {
     $stmt = $pdo->prepare("
-        SELECT * FROM events
-        WHERE (creator = ? OR id IN (
-            SELECT event_id FROM event_registrations
-            WHERE user_id = ? AND status = 'attending'
-        ))
-        AND deleted_at IS NULL
-        ORDER BY start_at ASC
+        SELECT e.*, er.status AS my_status, er.id AS registration_id
+        FROM events e
+        LEFT JOIN event_registrations er ON e.id = er.event_id AND er.user_id = ?
+        WHERE (
+            e.creator = ?
+            OR (er.user_id = ? AND er.status IN ('attending', 'declined'))
+        )
+        AND e.deleted_at IS NULL
+        ORDER BY e.start_at ASC
     ");
-    $stmt->execute([$user_id, $user_id]);
+    $stmt->execute([$user_id, $user_id, $user_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function acceptInvitation(PDO $pdo, int $registration_id, int $user_id): bool
+{
+    $stmt = $pdo->prepare("
+    UPDATE event_registrations
+    SET status = 'attending'
+    WHERE id = ?
+    AND user_id = ?");
+    return $stmt->execute([$registration_id, $user_id]);
+}
+
+function declineInvitation(PDO $pdo, int $registration_id, int $user_id): bool
+{
+    $stmt = $pdo->prepare("
+    UPDATE event_registrations
+    SET status = 'declined'
+    WHERE id = ?
+    AND user_id = ?");
+    return $stmt->execute([$registration_id, $user_id]);
 }
 
 function createEvent(
@@ -162,12 +184,11 @@ function addEventRegistration(PDO $pdo, int $event_id, int $user_id, string $sta
 function updateParticipation(PDO $pdo, int $event_id, int $user_id, string $status)
 {
     $stmt = $pdo->prepare("
-        UPDATE event_registrations
-        SET status = ?
-        WHERE event_id = ?
-        AND user_id = ?
+        INSERT INTO event_registrations (event_id, user_id, status)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE status = VALUES(status)
     ");
-    return $stmt->execute([$status, $event_id, $user_id]);
+    return $stmt->execute([$event_id, $user_id, $status]);
 }
 
 function getEventCreatorById(PDO $pdo, int $creator_id)
