@@ -3,7 +3,11 @@
 // Find user by email - used for login and duplicate check
 function findUserByEmail(PDO $pdo, string $email)
 {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND deleted_at IS NULL");
+    $stmt = $pdo->prepare("
+    SELECT *
+    FROM users
+    WHERE email = ?
+    AND deleted_at IS NULL");
     $stmt->execute([trim($email)]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
