@@ -6,14 +6,11 @@ git add .
 git commit -m "message"
 git push -u origin main --force
 
-
 https://www.flaticon.com/search?word=edit&color=color - iconky
 bootstrap frontend framework - https://adminlte.io/blog/bootstrap-login-forms/
 https://colorlib.com/etc/regform/colorlib-regform-7/index.html
 
 */
-
-// $domena = "http://localhost/bp/bp";
 $domena = "http://" . $_SERVER['HTTP_HOST'] . "/bp/bp";
 
 $env = parse_ini_file(__DIR__ . '/.env');
