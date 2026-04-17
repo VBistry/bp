@@ -1,6 +1,5 @@
 <?php include 'Views/includes/toast.php'; ?>
 
-
 <div class="confirm-modal" id="confirmModal">
     <div class="confirm-modal__box">
         <span class="confirm-modal__message" id="confirmMessage">Are you sure?</span>

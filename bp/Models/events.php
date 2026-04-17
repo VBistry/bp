@@ -256,6 +256,16 @@ function getPollOptionWinner(PDO $pdo, int $event_id)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function getPollOptionById(PDO $pdo, int $option_id)
+{
+    $stmt = $pdo->prepare("
+    SELECT *
+    FROM event_poll_options
+    WHERE id = ?");
+    $stmt->execute([$option_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 function closePollAndConfirmEvent(PDO $pdo, int $event_id)
 {
     $winner = getPollOptionWinner($pdo, $event_id);
@@ -281,52 +291,17 @@ function closePollAndConfirmEvent(PDO $pdo, int $event_id)
     return false;
 }
 
-function getPollOptionById(PDO $pdo, int $option_id)
-{
-    $stmt = $pdo->prepare("
-    SELECT *
-    FROM event_poll_options
-    WHERE id = ?");
-    $stmt->execute([$option_id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
 
-function getEventsParticipants(PDO $pdo, int $event_id)
+function getEventRegistrationsByStatus(PDO $pdo, int $event_id, string $status)
 {
     $stmt = $pdo->prepare("
         SELECT u.id, u.first_name, u.surname
         FROM users u
         JOIN event_registrations er ON u.id = er.user_id
-        WHERE er.event_id = ? AND er.status = 'attending'
+        WHERE er.event_id = ? AND er.status = ?
         AND u.deleted_at IS NULL
     ");
-    $stmt->execute([$event_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getEventsDeclinedInvitations(PDO $pdo, int $event_id)
-{
-    $stmt = $pdo->prepare("
-        SELECT u.id, u.first_name, u.surname
-        FROM users u
-        JOIN event_registrations er ON u.id = er.user_id
-        WHERE er.event_id = ? AND er.status = 'declined'
-        AND u.deleted_at IS NULL
-    ");
-    $stmt->execute([$event_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getEventsInvitations(PDO $pdo, int $event_id)
-{
-    $stmt = $pdo->prepare("
-        SELECT u.id, u.first_name, u.surname 
-        FROM users u
-        JOIN event_registrations er ON u.id = er.user_id
-        WHERE er.event_id = ? AND er.status = 'pending'
-        AND u.deleted_at IS NULL
-    ");
-    $stmt->execute([$event_id]);
+    $stmt->execute([$event_id, $status]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 

@@ -109,9 +109,9 @@
                 </div>
 
                 <?php
-                $participants = getEventsParticipants($pdo, $event_data['id']);
-                $invitations  = getEventsInvitations($pdo, $event_data['id']);
-                $declined_invitations = getEventsDeclinedInvitations($pdo, $event_data['id']);
+                $participants         = getEventRegistrationsByStatus($pdo, $event_data['id'], 'attending');
+                $invitations          = getEventRegistrationsByStatus($pdo, $event_data['id'], 'pending');
+                $declined_invitations = getEventRegistrationsByStatus($pdo, $event_data['id'], 'declined');
                 $all_ids      = array_merge(array_column($participants, 'id'), array_column($invitations, 'id'));
                 $is_involved  = $event_data['creator'] === $_SESSION['user_id']
                             || $user_data['role'] === 'admin'

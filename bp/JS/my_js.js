@@ -1,5 +1,5 @@
 /* ==========================================================
-   GLOBÁLNÍ FUNKCE — musí být PŘED DOMContentLoaded
+   GLOBAL FUNCTIONS
    ========================================================== */
 
 function fadeOutEffect(element) {
@@ -55,14 +55,14 @@ document.addEventListener('click', function (e) {
 
 
 /* ==========================================================
-   PO NAČTENÍ STRÁNKY
+   AFTER PAGE LOAD
    ========================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 1: FLASH NOTIFIKACE (ze session/PHP)
+     * FLASH NOTIFICATIONS (from session/PHP)
      * -----------------------------------------
      */
     document.querySelectorAll('.notification').forEach(n => {
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 2: VALIDACE — CREATE EVENT
+     * VALIDATION — CREATE EVENT
      * -----------------------------------------
      */
     const createEventForm = document.getElementById('createEventForm');
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                // Deadline musí být dříve než nejbližší poll option
+                // Deadline must be earlier than the earliest poll option
                 const pollStarts = [...starts].map(s => s.value).filter(v => v !== '');
                 if (pollStarts.length > 0) {
                     const earliestPoll = Math.min(...pollStarts.map(v => new Date(v).getTime()));
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 3: VALIDACE — EDIT EVENT
+     * VALIDATION — EDIT EVENT
      * -----------------------------------------
      */
     const editEventForm = document.getElementById('editEventForm');
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                // Deadline musí být dříve než nejbližší poll option
+                // Deadline must be earlier than the earliest poll option
                 const pollStarts = [...starts].map(s => s.value).filter(v => v !== '');
                 if (pollStarts.length > 0) {
                     const earliestPoll = Math.min(...pollStarts.map(v => new Date(v).getTime()));
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 4: VALIDACE — LOGIN
+     * VALIDATION — LOGIN
      * -----------------------------------------
      */
     const loginForm = document.getElementById('login-form');
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 5: VALIDACE — REGISTER
+     * VALIDATION — REGISTER
      * -----------------------------------------
      */
     const registerForm = document.getElementById('register-form');
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 6: EDIT PROFILE VALIDACE
+     * EDIT PROFILE VALIDATION
      * -----------------------------------------
      */
     const editProfileForm = document.getElementById('editProfileForm');
@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 7: VALIDACE — FORGOT PASSWORD
+     * VALIDATION — FORGOT PASSWORD
      * -----------------------------------------
      */
     const forgotPasswordForm = document.querySelector('form[action*="forgot-password"]');
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 8: VALIDACE — RESET PASSWORD
+     * VALIDATION — RESET PASSWORD
      * -----------------------------------------
      */
     const resetPasswordForm = document.querySelector('form[action*="reset-password"]');
@@ -439,7 +439,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
     * -----------------------------------------
-    * ČÁST 9: KALENDÁŘ (FULLCALENDAR)
+    * FULLCALENDAR
     * -----------------------------------------
     */
 
@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (calendarEl) {
 
-        const isMobile = () => window.innerWidth < 769; // v css mam 768px, tady je <, takže proto 769
+        const isMobile = () => window.innerWidth < 769;
 
         function getInitialView() {
             return isMobile() ? 'listMonth' : 'dayGridMonth';
@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 8: PŘEPÍNÁNÍ SEKCÍ CONFIRMED / PLANNING
+     * TOGGLING SECTIONS CONFIRMED / PLANNING
      * -----------------------------------------
      */
     const statusSelect = document.getElementById("status");
@@ -517,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 9: PŘIDÁVÁNÍ / ODEBÍRÁNÍ TERMÍNŮ DO ANKETY
+     * ADDING / REMOVING POLL DATE OPTIONS
      * -----------------------------------------
      */
     const addOptionBtn = document.getElementById("add-option-btn");
@@ -559,7 +559,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 10: POLL OPTION CARDS — VIZUÁLNÍ VÝBĚR
+     * POLL OPTION CARDS — VISUAL SELECTION
      * -----------------------------------------
      */
     const pollCards = document.querySelectorAll('.poll-option-card');
@@ -574,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 11: VYHLEDÁVÁNÍ V TABULKÁCH
+     * TABLE SEARCH
      * -----------------------------------------
      */
     const eventsSearch = document.getElementById('eventsSearch');
@@ -593,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 12: VALIDACE — FRIENDS SEARCH
+     * VALIDATION — FRIENDS SEARCH
      * -----------------------------------------
      */
     const friendsSearchForm = document.querySelector('form[action*="friends/search"]');
@@ -619,7 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 13: AVATAR FILE INPUT — ZOBRAZENÍ NÁZVU
+     * AVATAR FILE INPUT — DISPLAY FILENAME
      * -----------------------------------------
      */
     const avatarInput = document.getElementById('avatar');
@@ -633,7 +633,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * ČÁST 14: HAMBURGER MENU (MOBIL)
+     * HAMBURGER MENU (MOBILE)
      * -----------------------------------------
      */
     const hamburgerBtn = document.getElementById('hamburgerBtn');
