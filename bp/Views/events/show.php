@@ -4,7 +4,7 @@
 
     <div class="main-content">
 
-        <!-- SEKCE: Čekající pozvánky -->
+        <!-- SECTION: Pending invitations -->
         <?php if (!empty($pending_invitations)): ?>
             <section class="section-card">
                 <h2 class="section-card__title">Pending Invitations (<?php echo count($pending_invitations); ?>)</h2>
@@ -35,7 +35,7 @@
             </section>
         <?php endif; ?>
 
-        <!-- Hlavní tabulka eventů -->
+        <!-- Main events table -->
         <div class="events-table-wrapper">
 
             <div class="search-bar-row">
@@ -122,7 +122,7 @@
 
         </div>
 
-        <!-- Tabulka odmítnutých eventů -->
+        <!-- Declined events table -->
         <?php if (!empty($declined_events)): ?>
             <section class="events-table-wrapper">
                 <h2 class="events-table__title">Not Going</h2>

@@ -2,7 +2,7 @@
     <h1>Friends Details</h1>
     <div class="main-content">
 
-        <!-- SEKCE: Hlavička -->
+        <!-- SECTION: Header -->
         <section class="profile-header-card">
             <?php if (!empty($friend_data['avatar_url']) && file_exists($friend_data['avatar_url'])): ?>
                 <img src="<?php echo $domena . '/' . htmlspecialchars($friend_data['avatar_url']); ?>" alt="Avatar"
@@ -22,7 +22,7 @@
             </div>
         </section>
 
-        <!-- SEKCE: Osobní informace -->
+        <!-- SECTION: Personal information -->
         <section class="section-card">
             <h3 class="section-card__title">Personal Information</h3>
 
@@ -55,7 +55,7 @@
             </div>
         </section>
 
-        <!-- SEKCE: Účet -->
+        <!-- SECTION: Account -->
         <section class="section-card">
             <h3 class="section-card__title">Account</h3>
 
@@ -74,7 +74,7 @@
             </div>
         </section>
 
-        <!-- AKCE -->
+        <!-- ACTIONS -->
         <div class="btn-group">
             
             <form class="btn--full-width" action="<?php echo $domena; ?>/friends" method="POST">

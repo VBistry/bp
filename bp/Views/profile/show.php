@@ -3,7 +3,7 @@
 
     <div class="main-content">
 
-        <!-- SEKCE: Hlavička profilu -->
+        <!-- SECTION: Profile header -->
         <div class="profile-header-card">
             <?php if (!empty($user_data['avatar_url']) && file_exists($user_data['avatar_url'])): ?>
                 <a href="profile/edit" class="avatar-edit-wrapper">
@@ -32,7 +32,7 @@
 
         <a href="profile/edit" class="fixed-btn fixed-btn--edit fixed-btn--mobile-only">✎</a>
 
-        <!-- SEKCE: Osobní informace -->
+        <!-- SECTION: Personal information -->
         <section class="section-card">
             <h3 class="section-card__title">Personal Information</h3>
             
@@ -67,7 +67,7 @@
             </div>
         </section>
 
-        <!-- SEKCE: Účet -->
+        <!-- SECTION: Account -->
         <section class="section-card">
             <h3 class="section-card__title">Account</h3>
 

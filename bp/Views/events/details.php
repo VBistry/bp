@@ -2,7 +2,7 @@
     <h1>Event Details</h1>
     <div class="main-content">
 
-        <!-- HLAVIČKA EVENTU -->
+        <!-- EVENT HEADER -->
         <div class="event-detail__header">
             <?php if ($_SESSION['user_id'] === $event_data['creator'] || $user_data['role'] === 'admin'): ?>
                 <a href="events/edit/<?php echo $event_data['id']; ?>" class="btn-group__item profile-header-card__edit-btn">Edit ✎</a>
@@ -15,7 +15,7 @@
             </span>
         </div>
 
-        <!-- SEKCE: Hlasování -->
+        <!-- SECTION: Voting -->
         <?php if ($event_data['status'] === 'planning'): ?>
             <section class="section-card">
                 <h3 class="section-card__title">Vote for the Best Date</h3>
@@ -58,7 +58,7 @@
             </section>
         <?php endif; ?>
 
-        <!-- SEKCE: Datum a místo -->
+        <!-- SECTION: Date and location -->
         <section class="section-card">
             <h3 class="section-card__title">Event Details</h3>
 
@@ -180,7 +180,7 @@
             <a href="events/edit/<?php echo $event_data['id']; ?>" class="fixed-btn fixed-btn--edit fixed-btn--mobile-only">✎</a>
         <?php endif; ?>
 
-        <!-- SEKCE: Moje účast -->
+        <!-- SECTION: My participation -->
         <?php if ($event_data['status'] !== 'cancelled' && ($user_participation_status !== null || $_SESSION['user_id'] === $event_data['creator'])): ?>
             <section class="section-card">
                 <h3 class="section-card__title">My Participation</h3>
@@ -200,7 +200,7 @@
             </section>
         <?php endif; ?>
 
-        <!-- AKCE -->
+        <!-- ACTIONS -->
         <div class="btn-group">
             
             <?php if (($_SESSION['user_id'] === $event_data['creator'] || $user_data['role'] === 'admin') && $event_data['status'] !== 'cancelled'): ?>

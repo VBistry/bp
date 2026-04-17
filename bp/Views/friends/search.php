@@ -5,7 +5,7 @@
     <div class="main-content">
         <div class="events-table-wrapper">
 
-            <!-- VYHLEDÁVACÍ FORMULÁŘ -->
+            <!-- SEARCH FORM -->
             <form action="<?php echo $domena; ?>/friends/search" method="GET" class="search-bar-row">
                 <input type="email" name="email" class="form-layout__input" placeholder="Search by email address..."
                     value="<?php echo htmlspecialchars($search_email ?? ''); ?>">
@@ -13,7 +13,7 @@
                     class="btn-group__item btn-group__item--primary">Search</button>
             </form>
 
-            <!-- VÝSLEDEK HLEDÁNÍ -->
+            <!-- SEARCH RESULT -->
             <?php if (!empty($search_email) && $search_result): ?>
                 <table class="events-table">
                     <thead>

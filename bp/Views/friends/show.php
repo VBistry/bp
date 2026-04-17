@@ -4,7 +4,7 @@
 
     <div class="main-content">
 
-    <!-- SEKCE: Příchozí žádosti -->
+    <!-- SECTION: Incoming requests -->
     <?php if (!empty($pending_requests)): ?>
         <section class="section-card">
             <h2 class="section-card__title">Pending Requests (<?php echo count($pending_requests); ?>)</h2>
@@ -43,7 +43,7 @@
 
     <?php endif; ?>
 
-    <!-- SEKCE: Seznam přátel -->
+    <!-- SECTION: Friends list -->
     <div class="events-table-wrapper">
 
         <div class="search-bar-row">

@@ -43,6 +43,6 @@
     <?php endif; ?>
 
     <div id='calendar'>
-        <!-- Zde se vykreslí kalendář pomocí FullCalendar -->
+        <!-- Calendar will be rendered here using FullCalendar -->
     </div>
 </main>

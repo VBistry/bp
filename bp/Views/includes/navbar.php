@@ -4,7 +4,7 @@
 
 <nav class="navbar__menu">
 
-    <!-- DESKTOP: původní lišta -->
+    <!-- DESKTOP: original navbar -->
     <ul class="navbar__list">
         <li class="navbar__item--left"> 
             <img class="nav-icon" src="images/today-icon.png" alt="Today">
@@ -35,7 +35,7 @@
         </li>
     </ul>
 
-    <!-- MOBIL: lišta s datem + hamburger -->
+    <!-- MOBILE: bar with date + hamburger -->
     <div class="navbar__mobile-bar">
         <div class="navbar__mobile-bar--left">
             <img class="nav-icon" src="images/today-icon.png" alt="Today">
@@ -47,7 +47,7 @@
         </button>
     </div>
 
-    <!-- MOBIL: dropdown menu -->
+    <!-- MOBILE: dropdown menu -->
     <div class="navbar__dropdown" id="navDropdown">
         <a href="dashboard"
             class="navbar__dropdown-item <?php echo $router['controller'] === 'dashboard' ? 'navbar__dropdown-item--active' : ''; ?>">Dashboard</a>

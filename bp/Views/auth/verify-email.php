@@ -1,7 +1,6 @@
 <?php
 include 'Views/includes/head.php';
 include 'Views/includes/navbar.php';
-// tady vyjimecne includuju ve view
 ?>
 
 <h1>Verification</h1>
