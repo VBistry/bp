@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * -----------------------------------------
-     * FLASH NOTIFICATIONS (from session/PHP)
+     * FLASH NOTIFICATIONS (from session)
      * -----------------------------------------
      */
     document.querySelectorAll('.notification').forEach(n => {
@@ -129,10 +129,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Deadline must be earlier than the earliest poll option
-                const pollStarts = [...starts].map(s => s.value).filter(v => v !== '');
-                if (pollStarts.length > 0) {
-                    const earliestPoll = Math.min(...pollStarts.map(v => new Date(v).getTime()));
-                    if (new Date(deadline).getTime() >= earliestPoll) {
+                const pollStartDates = [...starts].map(s => new Date(s.value)).filter(d => !isNaN(d));
+                if (pollStartDates.length > 0) {
+                    const earliestPoll = new Date(Math.min(...pollStartDates));
+                    if (new Date(deadline) >= earliestPoll) {
                         showNotification('Voting deadline must be earlier than the earliest proposed date.', 'error');
                         document.getElementById('voting_deadline').focus();
                         return;
@@ -211,10 +211,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Deadline must be earlier than the earliest poll option
-                const pollStarts = [...starts].map(s => s.value).filter(v => v !== '');
-                if (pollStarts.length > 0) {
-                    const earliestPoll = Math.min(...pollStarts.map(v => new Date(v).getTime()));
-                    if (new Date(deadline).getTime() >= earliestPoll) {
+                const pollStartDates = [...starts].map(s => new Date(s.value)).filter(d => !isNaN(d));
+                if (pollStartDates.length > 0) {
+                    const earliestPoll = new Date(Math.min(...pollStartDates));
+                    if (new Date(deadline) >= earliestPoll) {
                         showNotification('Voting deadline must be earlier than the earliest proposed date.', 'error');
                         document.getElementById('voting_deadline').focus();
                         return;

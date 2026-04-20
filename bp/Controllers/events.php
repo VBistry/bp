@@ -55,6 +55,18 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
         }
     }
 
+    // Deadline must be before all proposed poll dates
+    if ($status === 'planning' && $voting_deadline && !empty($_POST['poll_starts'])) {
+        $deadline = new DateTime($voting_deadline);
+        foreach ($_POST['poll_starts'] as $ps) {
+            if (!empty($ps) && $deadline >= new DateTime($ps)) {
+                setFlash('error', 'Voting deadline must be earlier than the earliest proposed date.');
+                header("Location: " . $domena . "/events/create");
+                exit;
+            }
+        }
+    }
+
     // Validate invitees
     $invited_ids = array_map('intval', $_POST['invitee_ids'] ?? []);
     if (!empty($invited_ids)) {
@@ -171,6 +183,18 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
             setFlash('error', 'End time must be after start time.');
             header("Location: " . $domena . "/events/edit/" . $event_id);
             exit;
+        }
+    }
+
+    // Deadline must be before all proposed poll dates
+    if ($status === 'planning' && $voting_deadline && !empty($_POST['poll_starts'])) {
+        $deadline = new DateTime($voting_deadline);
+        foreach ($_POST['poll_starts'] as $ps) {
+            if (!empty($ps) && $deadline >= new DateTime($ps)) {
+                setFlash('error', 'Voting deadline must be earlier than the earliest proposed date.');
+                header("Location: " . $domena . "/events/edit/" . $event_id);
+                exit;
+            }
         }
     }
 

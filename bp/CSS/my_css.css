@@ -13,7 +13,6 @@ h1 {
 
 body {
     overflow-x: clip;
-    /* same as hidden, but clip allows position sticky to work */
     padding-bottom: 1.5em;
 }
 

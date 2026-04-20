@@ -3,7 +3,7 @@
     <div class="main-content">
 
         <!-- EVENT HEADER -->
-        <div class="event-detail__header">
+        <section class="event-detail__header">
             <?php if ($_SESSION['user_id'] === $event_data['creator'] || $user_data['role'] === 'admin'): ?>
                 <a href="events/edit/<?php echo $event_data['id']; ?>" class="btn-group__item profile-header-card__edit-btn">Edit ✎</a>
             <?php endif; ?>
@@ -13,7 +13,7 @@
             <span class="event-badge event-badge--<?php echo $display_status['badge']; ?>">
                 <?php echo $display_status['label']; ?>
             </span>
-        </div>
+        </section>
 
         <!-- SECTION: Voting -->
         <?php if ($event_data['status'] === 'planning'): ?>
@@ -109,10 +109,10 @@
                 </div>
 
                 <?php
-                $participants         = getEventRegistrationsByStatus($pdo, $event_data['id'], 'attending');
-                $invitations          = getEventRegistrationsByStatus($pdo, $event_data['id'], 'pending');
+                $participants = getEventRegistrationsByStatus($pdo, $event_data['id'], 'attending');
+                $invitations = getEventRegistrationsByStatus($pdo, $event_data['id'], 'pending');
                 $declined_invitations = getEventRegistrationsByStatus($pdo, $event_data['id'], 'declined');
-                $all_ids      = array_merge(array_column($participants, 'id'), array_column($invitations, 'id'));
+                $all_ids = array_merge(array_column($participants, 'id'), array_column($invitations, 'id'));
                 $is_involved  = $event_data['creator'] === $_SESSION['user_id']
                             || $user_data['role'] === 'admin'
                             || in_array($_SESSION['user_id'], $all_ids);

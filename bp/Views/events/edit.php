@@ -54,7 +54,7 @@
                                 value="<?php echo !empty($event_data['voting_deadline']) ? date('Y-m-d\TH:i', strtotime($event_data['voting_deadline'])) : ''; ?>">
                         </div>
 
-                        <div class="proposed-dates">
+                        <section class="proposed-dates">
                             <h2>Proposed Dates</h2>
                             <p class="proposed-dates__hint">Add at least 2 proposed date ranges for participants to vote
                                 on.</p>
@@ -88,7 +88,7 @@
 
                             <button type="button" id="add-option-btn" class="btn-group__item">+ Add Another
                                 Date</button>
-                        </div>
+                        </section>
                     </div>
 
                     <div class="form-layout__item form-layout__item--description">
@@ -99,20 +99,22 @@
                     </div>
                 </div>
 
-                <h2>Invite Friends</h2>
-                <?php if (!empty($friends_list)): ?>
-                    <div class="friends-invite-list">
-                        <?php foreach ($friends_list as $friend): ?>
-                            <label class="friends-invite-list__item">
-                                <input type="checkbox" name="invitee_ids[]" value="<?php echo $friend['id']; ?>">
-                                <span><?php echo htmlspecialchars($friend['first_name'] . ' ' . $friend['surname']); ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class="text--muted">You have no friends to invite yet. <a href="friends">Find friends</a></p>
-                <?php endif; ?>
-
+                <section>
+                    <h2>Invite Friends</h2>
+                    <?php if (!empty($friends_list)): ?>
+                        <div class="friends-invite-list">
+                            <?php foreach ($friends_list as $friend): ?>
+                                <label class="friends-invite-list__item">
+                                    <input type="checkbox" name="invitee_ids[]" value="<?php echo $friend['id']; ?>">
+                                    <span><?php echo htmlspecialchars($friend['first_name'] . ' ' . $friend['surname']); ?></span>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text--muted">You have no friends to invite yet. <a href="friends">Find friends</a></p>
+                    <?php endif; ?>
+                </section>
+                
                 <div class="btn-group">
                     <button type="submit" name="submit_update_event"
                         class="btn-group__item btn-group__item--primary">Save Changes</button>

@@ -1,5 +1,7 @@
 <main class="content--wide">
+
     <h1>Your Planner Dashboard</h1>
+
     <span>Your upcoming events today:</span>
     <?php if (empty($events_today)): ?>
         <p>You have no events scheduled for today.</p>
@@ -43,6 +45,6 @@
     <?php endif; ?>
 
     <div id='calendar'>
-        <!-- Calendar will be rendered here using FullCalendar -->
+        <!-- Calendar will be rendered by FullCalendar -->
     </div>
 </main>

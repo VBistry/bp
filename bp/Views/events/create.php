@@ -94,19 +94,21 @@
 
                 </div>
 
-                <h2>Invite Friends</h2>
-                <?php if (!empty($friends_list)): ?>
-                    <div class="friends-invite-list">
-                        <?php foreach ($friends_list as $friend): ?>
-                            <label class="friends-invite-list__item">
-                                <input type="checkbox" name="invitee_ids[]" value="<?php echo $friend['id']; ?>">
-                                <span><?php echo htmlspecialchars($friend['first_name'] . ' ' . $friend['surname']); ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class="text--muted">You have no friends to invite yet. <a href="friends">Find friends</a></p>
-                <?php endif; ?>
+                <section>
+                    <h2>Invite Friends</h2>
+                    <?php if (!empty($friends_list)): ?>
+                        <div class="friends-invite-list">
+                            <?php foreach ($friends_list as $friend): ?>
+                                <label class="friends-invite-list__item">
+                                    <input type="checkbox" name="invitee_ids[]" value="<?php echo $friend['id']; ?>">
+                                    <span><?php echo htmlspecialchars($friend['first_name'] . ' ' . $friend['surname']); ?></span>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text--muted">You have no friends to invite yet. <a href="friends">Find friends</a></p>
+                    <?php endif; ?>
+                </section>
 
                 <div class="btn-group">
                     <button type="submit" name="submit_create_event"
