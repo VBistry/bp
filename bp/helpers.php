@@ -53,6 +53,7 @@ function sendVerificationEmail(string $toEmail, string $toName, string $verifica
         $mail->SMTPAuth = true;
         $mail->Username = MAIL_USERNAME;
         $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = MAIL_PORT;
 
         // sender and recipient
@@ -101,6 +102,7 @@ function sendPasswordResetEmail(string $toEmail, string $toName, string $resetUr
         $mail->SMTPAuth = true;
         $mail->Username = MAIL_USERNAME;
         $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = MAIL_PORT;
 
         // sender and recipient

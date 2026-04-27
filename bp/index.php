@@ -10,6 +10,7 @@ https://www.flaticon.com/search?word=edit&color=color - iconky
 bootstrap frontend framework - https://adminlte.io/blog/bootstrap-login-forms/
 https://colorlib.com/etc/regform/colorlib-regform-7/index.html
 
+smtp key: xsmtpsib-51260e2389875b0515558b6af716796318f6a7bd456c73866aae154509d4a0eb-ZDmAwLJXMCzH32Mh
 */
 $domena = "http://" . $_SERVER['HTTP_HOST'] . "/bp/bp";
 
