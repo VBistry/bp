@@ -496,6 +496,7 @@ main {
     align-items: center;
     gap: 1.5em;
     position: relative;
+    margin: 0.5em 0;
 }
 
 .profile-header-card--secondary {

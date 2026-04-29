@@ -54,8 +54,7 @@ function declineFriendRequest(PDO $pdo, int $friendship_id, int $receiver_id)
 {
     try {
         $stmt = $pdo->prepare("
-            UPDATE friendships
-            SET status = 'declined'
+            DELETE FROM friendships
             WHERE id = ?
             AND user_id_receiver = ?
             AND status = 'pending'
