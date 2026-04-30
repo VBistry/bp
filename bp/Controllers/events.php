@@ -55,6 +55,13 @@ if ($router['method'] === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
         }
     }
 
+    // Deadline cannot be in the past
+    if ($status === 'planning' && $voting_deadline && new DateTime($voting_deadline) <= new DateTime()) {
+        setFlash('error', 'Voting deadline cannot be in the past.');
+        header("Location: " . $domena . "/events/create");
+        exit;
+    }
+
     // Deadline must be before all proposed poll dates
     if ($status === 'planning' && $voting_deadline && !empty($_POST['poll_starts'])) {
         $deadline = new DateTime($voting_deadline);
@@ -172,6 +179,13 @@ if ($router['method'] === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST' && iss
 
     if ($status === 'planning' && $voting_deadline == null) {
         setFlash('error', 'You need to set deadline for voting!');
+        header("Location: " . $domena . "/events/edit/" . $event_id);
+        exit;
+    }
+
+    // Deadline cannot be in the past
+    if ($status === 'planning' && $voting_deadline && new DateTime($voting_deadline) <= new DateTime()) {
+        setFlash('error', 'Voting deadline cannot be in the past.');
         header("Location: " . $domena . "/events/edit/" . $event_id);
         exit;
     }

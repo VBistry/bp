@@ -86,6 +86,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const start = document.getElementById('start_at')?.value;
             const end = document.getElementById('end_at')?.value;
             const deadline = document.getElementById('voting_deadline')?.value;
+            const dateNow = new Date();
+            const dateDeadline = deadline ? new Date(deadline) : null;
+
 
             if (!name) {
                 showNotification('Event name is required.', 'error');
@@ -113,6 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
+                if (dateDeadline <= dateNow) {
+                    showNotification('Voting deadline cannot be in the past.', 'error');
+                    document.getElementById('voting_deadline').focus();
+                    return;
+                }
+
                 const starts = document.querySelectorAll('input[name="poll_starts[]"]');
                 const ends = document.querySelectorAll('input[name="poll_ends[]"]');
                 let validCount = 0;
@@ -132,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const pollStartDates = [...starts].map(s => new Date(s.value)).filter(d => !isNaN(d));
                 if (pollStartDates.length > 0) {
                     const earliestPoll = new Date(Math.min(...pollStartDates));
-                    if (new Date(deadline) >= earliestPoll) {
+                    if (dateDeadline >= earliestPoll) {
                         showNotification('Voting deadline must be earlier than the earliest proposed date.', 'error');
                         document.getElementById('voting_deadline').focus();
                         return;
@@ -168,6 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const start = document.getElementById('start_at')?.value;
             const end = document.getElementById('end_at')?.value;
             const deadline = document.getElementById('voting_deadline')?.value;
+            const dateNow = new Date();
+            const dateDeadline = deadline ? new Date(deadline) : null;
 
             if (!name) {
                 showNotification('Event name is required.', 'error');
@@ -195,6 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
+                if (dateDeadline <= dateNow) {
+                    showNotification('Voting deadline cannot be in the past.', 'error');
+                    document.getElementById('voting_deadline').focus();
+                    return;
+                }
+
                 const starts = document.querySelectorAll('input[name="poll_starts[]"]');
                 const ends = document.querySelectorAll('input[name="poll_ends[]"]');
                 let validCount = 0;
@@ -214,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const pollStartDates = [...starts].map(s => new Date(s.value)).filter(d => !isNaN(d));
                 if (pollStartDates.length > 0) {
                     const earliestPoll = new Date(Math.min(...pollStartDates));
-                    if (new Date(deadline) >= earliestPoll) {
+                    if (dateDeadline >= earliestPoll) {
                         showNotification('Voting deadline must be earlier than the earliest proposed date.', 'error');
                         document.getElementById('voting_deadline').focus();
                         return;
