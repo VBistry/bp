@@ -47,6 +47,7 @@ if ($router['method'] == 'login') {
             exit;
 
         } else {
+            $_SESSION['login_email'] = $email;
             setFlash('error', 'Invalid email or password.');
             header("Location: " . $domena . "/auth/login");
             exit;

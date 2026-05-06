@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
                                 <input type="email" name="email" id="email" placeholder="Your Email"
-                                    value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
+                                    value="<?php $val = $_SESSION['login_email'] ?? ''; unset($_SESSION['login_email']); echo htmlspecialchars($val); ?>"
                                     />
                             </div>
 
