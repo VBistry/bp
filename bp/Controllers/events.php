@@ -485,12 +485,18 @@ if ($router['method'] === 'create') {
     $running_events = [];
     $upcoming_events = [];
     $past_events = [];
+    $cancelled_events = [];
     $declined_events = [];
     $current_time = time();
 
     foreach ($all_events as $event) {
         if (($event['my_status'] ?? null) === 'declined') {
             $declined_events[] = $event;
+            continue;
+        }
+
+        if ($event['status'] === 'cancelled') {
+            $cancelled_events[] = $event;
             continue;
         }
 

@@ -48,10 +48,11 @@
 
             <?php
             $all_sections = [
-                ['events' => $voting_events,  'label' => 'Planning',  'badge' => 'planning'],
-                ['events' => $running_events,  'label' => 'Running',   'badge' => 'running'],
-                ['events' => $upcoming_events, 'label' => 'Upcoming',  'badge' => 'upcoming'],
-                ['events' => $past_events,     'label' => 'Ended',     'badge' => 'ended'],
+                ['events' => $voting_events,     'label' => 'Planning',   'badge' => 'planning'],
+                ['events' => $running_events,    'label' => 'Running',    'badge' => 'running'],
+                ['events' => $upcoming_events,   'label' => 'Upcoming',   'badge' => 'upcoming'],
+                ['events' => $past_events,       'label' => 'Ended',      'badge' => 'ended'],
+                ['events' => $cancelled_events,  'label' => 'Cancelled',  'badge' => 'cancelled'],
             ];
             $total = array_sum(array_map(fn($s) => count($s['events']), $all_sections));
             ?>

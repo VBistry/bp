@@ -867,6 +867,11 @@ main {
     color: #fd7e14;
 }
 
+.event-badge--cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
 /* =========================================
     EVENT DETAIL
    ========================================= */
