@@ -230,6 +230,16 @@ function getPollVoteCounts(PDO $pdo, int $event_id)
     return $counts;
 }
 
+function deleteUserVote(PDO $pdo, int $event_id, int $user_id): bool
+{
+    $stmt = $pdo->prepare("
+        DELETE FROM event_poll_votes
+        WHERE event_id = ?
+        AND user_id = ?
+    ");
+    return $stmt->execute([$event_id, $user_id]);
+}
+
 function getUserVote(PDO $pdo, int $event_id, int $user_id)
 {
     $stmt = $pdo->prepare("

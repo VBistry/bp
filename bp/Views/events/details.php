@@ -28,14 +28,15 @@
                         <input type="hidden" name="event_id" value="<?php echo $event_data['id']; ?>">
 
                         <div class="poll-options-list">
+                            <?php $is_declined = ($user_participation_status === 'declined'); ?>
                             <?php foreach ($poll_options as $option): ?>
                                 <?php
                                 $votes      = $vote_counts[$option['id']] ?? 0;
                                 $is_checked = ($user_current_vote === $option['id']) ? 'checked' : '';
                                 ?>
-                                <label class="poll-option-card <?php echo $is_checked ? 'poll-option-card--selected' : ''; ?>">
+                                <label class="poll-option-card <?php echo $is_checked ? 'poll-option-card--selected' : ''; ?> <?php echo $is_declined ? 'poll-option-card--disabled' : ''; ?>">
                                     <input type="radio" name="poll_option" value="<?php echo $option['id']; ?>"
-                                        <?php echo $is_checked; ?> class="poll-option-card__radio">
+                                        <?php echo $is_checked; ?> <?php echo $is_declined ? 'disabled' : ''; ?> class="poll-option-card__radio">
                                     <div class="poll-option-card__dates">
                                         <span><?php echo date('d.m.Y H:i', strtotime($option['start_at'])); ?></span>
                                         <span class="poll-option-card__arrow">→</span>
@@ -48,9 +49,11 @@
                             <?php endforeach; ?>
                         </div>
 
-                        <button type="submit" name="submit_vote" class="btn-group__item btn-group__item--primary">
-                            Submit Vote
-                        </button>
+                        <?php if (!$is_declined): ?>
+                            <button type="submit" name="submit_vote" class="btn-group__item btn-group__item--primary">
+                                Submit Vote
+                            </button>
+                        <?php endif; ?>
                     </form>
                 <?php else: ?>
                     <p class="description-style">No dates proposed yet.</p>

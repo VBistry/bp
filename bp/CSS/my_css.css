@@ -969,6 +969,12 @@ main {
     color: #0f5132;
 }
 
+.poll-option-card--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* =========================================
     PLANNING — POLL
    ========================================= */

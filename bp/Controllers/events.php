@@ -331,6 +331,9 @@ if ($router['method'] === 'detail' && $_SERVER['REQUEST_METHOD'] === 'POST' && i
 
     if ($target_event_id && in_array($participation_status, $allowed_statuses)) {
         updateParticipation($pdo, $target_event_id, $current_user_id, $participation_status);
+        if ($participation_status === 'declined') {
+            deleteUserVote($pdo, $target_event_id, $current_user_id);
+        }
         setFlash('success', 'Your participation status has been updated!');
     } else {
         setFlash('error', 'Invalid participation status.');
