@@ -425,6 +425,7 @@ if ($router['method'] === 'create') {
     }
 
     $friends_list = getAllUserFriends($pdo, $_SESSION['user_id']);
+    $existing_poll_options = $event_data['status'] === 'planning' ? getPollOptionsByEventId($pdo, $event_id) : [];
     include 'Views/events/edit.php';
 
 } elseif ($router['method'] === 'detail') {

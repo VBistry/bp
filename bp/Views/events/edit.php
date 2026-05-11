@@ -60,30 +60,24 @@
                                 on.</p>
 
                             <div id="poll-options-container">
+                                <?php
+                                $existing_options = !empty($existing_poll_options) ? $existing_poll_options : [null, null];
+                                foreach ($existing_options as $opt): ?>
                                 <div class="poll-option">
                                     <div class="poll-option__field">
                                         <span>Start:</span>
-                                        <input type="datetime-local" name="poll_starts[]" class="form-layout__input">
+                                        <input type="datetime-local" name="poll_starts[]" class="form-layout__input"
+                                            value="<?php echo $opt ? date('Y-m-d\TH:i', strtotime($opt['start_at'])) : ''; ?>">
                                     </div>
                                     <div class="poll-option__field">
                                         <span>End:</span>
-                                        <input type="datetime-local" name="poll_ends[]" class="form-layout__input">
+                                        <input type="datetime-local" name="poll_ends[]" class="form-layout__input"
+                                            value="<?php echo $opt ? date('Y-m-d\TH:i', strtotime($opt['end_at'])) : ''; ?>">
                                     </div>
                                     <button type="button"
                                         class="btn-group__item btn-group__item--danger btn-group__item--small poll-remove-btn">X</button>
                                 </div>
-                                <div class="poll-option">
-                                    <div class="poll-option__field">
-                                        <span>Start:</span>
-                                        <input type="datetime-local" name="poll_starts[]" class="form-layout__input">
-                                    </div>
-                                    <div class="poll-option__field">
-                                        <span>End:</span>
-                                        <input type="datetime-local" name="poll_ends[]" class="form-layout__input">
-                                    </div>
-                                    <button type="button"
-                                        class="btn-group__item btn-group__item--danger btn-group__item--small poll-remove-btn">X</button>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
 
                             <button type="button" id="add-option-btn" class="btn-group__item">+ Add Another
